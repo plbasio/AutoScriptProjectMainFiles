@@ -301,7 +301,6 @@ checkForProgressBar()
 siebelClickOnDropDownArrowInNotes()
 siebelSelectDupPxAlert()
 siebelFlagContactTick()
-clearClipboard()
 copyStickyNotes()
 siebelDescriptionFieldInActiveNotes()
 
@@ -323,6 +322,8 @@ Sleep 50
 SendInput {Enter}
 Sleep 50
 SendInput {Enter}
+Sleep 50
+SendInput {Up}
 Sleep 50
 SendInput {Up}
 Sleep 50
@@ -386,9 +387,9 @@ Send {Ctrl Up}
 ClipWait
 Sleep 100
 
-clearClipboard()
 siebelSourceDownArrow()
 siebelSelectSourceDUP()
+clearClipboard()
 siebelSelectStatusDownArrow()
 siebelSelectStatusDone()
 checkIfPxIsScrolled()
@@ -994,7 +995,7 @@ SendInput {Ctrl Down}
 SendInput {Raw}c
 SendInput {Ctrl Up}
 ClipWait, 1
-Sleep 50
+Sleep 200
 SetDefaultMouseSpeed, 2
 if RegExMatch(Clipboard, "(.{6}-.{6}-.{6})", OutputVar)
 {
@@ -1514,7 +1515,7 @@ SetDefaultMouseSpeed, 2
 siebelFlagContactTick()
 {
 SetDefaultMouseSpeed, 0
-Sleep 100
+Sleep 50
 
 	MouseMove 1641, 839 ; Moves over Flag Contact Tick in newly created Active Note
 
@@ -1532,10 +1533,14 @@ SetDefaultMouseSpeed, 2
 siebelDescriptionFieldInActiveNotes()
 {
 SetDefaultMouseSpeed, 0
+Sleep 50
 
 	MouseMove 1730, 844 ; Moves over Description Field in newly created Active Note
 	
-MouseClick	
+MouseClick
+Sleep 50
+MouseClick
+Sleep 50
 SetDefaultMouseSpeed, 2
 }
 

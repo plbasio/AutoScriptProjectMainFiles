@@ -66,11 +66,16 @@ CoordMode, Mouse, Screen
 CoordMode, Pixel, Screen
 
 ^p::
-checkForPatientNameToAppear()
-checkForProgressBar()
+Loop, 100
+{
+SetDefaultMouseSpeed, 0
+clearClipboard()
+siebelFlagContactTick()
 MouseMove 1222, 301
 Sleep 100
-MouseMove -1200, 479
+MouseClick
+SetDefaultMouseSpeed, 2
+}
 Return
 
 
@@ -78,6 +83,7 @@ Return
 
 removeCommentsField()
 {
+SetDefaultMouseSpeed, 0
 MouseMove 879, 337
 MouseClick
 MouseClick
@@ -105,12 +111,14 @@ SendInput ^{End}
 SendInput +{Home}
 SendInput {backspace}
 SendInput {backspace}
+SetDefaultMouseSpeed, 2
 }
 
 
 
 removeDescriptionField()
 {
+SetDefaultMouseSpeed, 0
 MouseMove 882, 275
 MouseClick
 MouseClick
@@ -138,6 +146,7 @@ SendInput ^{End}
 SendInput +{Home}
 SendInput {backspace}
 SendInput {backspace}
+SetDefaultMouseSpeed, 2
 }
 
 
@@ -146,6 +155,7 @@ SendInput {backspace}
 
 setStatusDone()
 {
+SetDefaultMouseSpeed, 0
 MouseMove 935, 380
 Sleep 50
 MouseClick
@@ -153,12 +163,14 @@ Sleep 50
 MouseMove 936, 409
 Sleep 50
 MouseClick
+SetDefaultMouseSpeed, 2
 }
 
 
 
 setTyprOpenedInError()
 {
+SetDefaultMouseSpeed, 0
 MouseMove 715, 279
 Sleep 50
 MouseClick
@@ -166,6 +178,7 @@ Sleep 50
 SendInput {Raw}Opened in Error
 Sleep 50
 SendInput {Enter}
+SetDefaultMouseSpeed, 2
 }
 
 
@@ -234,7 +247,6 @@ checkForProgressBar()
 siebelClickOnDropDownArrowInNotes()
 siebelSelectDupPxAlert()
 siebelFlagContactTick()
-clearClipboard()
 copyStickyNotes()
 siebelDescriptionFieldInActiveNotes()
 
@@ -248,7 +260,7 @@ ClipWait
 Sleep 50
 
 checkIfPxIsScrolled()
-selectsPXNumberInProScriptAndCopyItForDuplicate()
+selectsPXNumberInProScriptAndCopyIt()
 siebelDescriptionFieldInActiveNotes()
 
 Send ^{Home}
@@ -256,6 +268,8 @@ Sleep 50
 SendInput {Enter}
 Sleep 50
 SendInput {Enter}
+Sleep 50
+SendInput {Up}
 Sleep 50
 SendInput {Up}
 Sleep 50
@@ -320,10 +334,11 @@ Send {Ctrl Up}
 ClipWait
 Sleep 100
 
-clearClipboard()
+
 siebelSourceDownArrow()
 siebelSelectSourceDUP()
 keyFix()
+clearClipboard()
 
 
 
@@ -344,7 +359,7 @@ removeDescriptionField()
 setTyprOpenedInError()
 setStatusDone()
 checkForPatientNameToAppear()
-
+checkForProgressBar()
 }
 
 BlockInput, MouseMoveOff
@@ -605,7 +620,7 @@ SendInput {Ctrl Down}
 SendInput {Raw}c
 SendInput {Ctrl Up}
 ClipWait, 1
-Sleep 50
+Sleep 200
 SetDefaultMouseSpeed, 2
 if RegExMatch(Clipboard, "(.{6}-.{6}-.{6})", OutputVar)
 {
@@ -1125,7 +1140,7 @@ SetDefaultMouseSpeed, 2
 siebelFlagContactTick()
 {
 SetDefaultMouseSpeed, 0
-Sleep 100
+Sleep 50
 
 	MouseMove 1641, 839 ; Moves over Flag Contact Tick in newly created Active Note
 
@@ -1143,10 +1158,14 @@ SetDefaultMouseSpeed, 2
 siebelDescriptionFieldInActiveNotes()
 {
 SetDefaultMouseSpeed, 0
+Sleep 50
 
 	MouseMove 1730, 844 ; Moves over Description Field in newly created Active Note
 	
-MouseClick	
+MouseClick
+Sleep 50
+MouseClick
+Sleep 50
 SetDefaultMouseSpeed, 2
 }
 
