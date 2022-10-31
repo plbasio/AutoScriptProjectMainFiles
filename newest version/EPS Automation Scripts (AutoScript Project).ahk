@@ -1932,8 +1932,8 @@ Sleep 10
 else
 break
 }
+Sleep 100
 }
-
 
 
 
