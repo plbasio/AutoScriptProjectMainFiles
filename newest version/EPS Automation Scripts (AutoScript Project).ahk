@@ -1,16 +1,4 @@
 ﻿
-#UseHook
-CoordMode, Mouse, Screen
-CoordMode, Pixel, Screen
-
-^p::
-clearClipboard()
-keyFix()
-siebelActivityNewButton()
-return
-
-
-
 
 
   ; ==================================================================== EXITS SCRIPT DOCUMENT ==========================================================
@@ -1400,9 +1388,9 @@ Reload
 
 siebelActivityNewButton()
 {
-Loop, 20
+Loop, 10
 {
-Sleep 100
+Sleep 200
 ImageSearch OutputVarX, OutputVarY, 565, 570, 613, 593, *100 %A_ScriptDir%\Images\New_Activity_Button.png
 if (ErrorLevel = 0)
 {
@@ -1410,6 +1398,7 @@ VarPosX := OutputVarX + 15
 VarPosY := OutputVarY + 5
 SetDefaultMouseSpeed, 0
 MouseMove %VarPosX%, %VarPosY%
+Sleep 100
 MouseClick
 SetDefaultMouseSpeed, 2
 Return
@@ -1441,7 +1430,6 @@ Sleep 100
 MouseClick
 Sleep 100
 MouseClick
-Sleep 100
 SetDefaultMouseSpeed, 2
 }
 
@@ -1450,9 +1438,9 @@ SetDefaultMouseSpeed, 2
 
 clickOnNewlyCreatedActivity()
 {
-Loop, 20
+Loop, 10
 {
-Sleep 100
+Sleep 200
 ImageSearch OutputVarX, OutputVarY, 492, 569, 1265, 720, *40 %A_ScriptDir%\Images\New_Activity_Other.png
 if (ErrorLevel = 0)
 {
