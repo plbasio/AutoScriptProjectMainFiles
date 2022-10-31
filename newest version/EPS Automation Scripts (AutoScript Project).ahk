@@ -447,7 +447,6 @@ Sleep 50
 checkIfTemplateWindowIsScrolled()
 selectsEPSReturnPXServiceTemplate()
 clicksOnOkInTemplateWindow()
-clearClipboard()
 checkIfPxIsScrolled()
 selectsPXNumberInProScriptAndCopyIt()
 siebelActivityCommentField()
@@ -513,6 +512,44 @@ SendInput ^{End}
 SendInput +{Home}
 SendInput {backspace}
 SendInput {backspace}
+
+Sleep 200
+clearClipboard()
+checkForExpiryDateOnPXFirstLine()
+siebelActivityCommentField()
+
+MouseClick
+Sleep, 50
+MouseClick
+Sleep 50
+SendInput {Ctrl Down}
+SendInput {Raw}v
+SendInput {Ctrl Up}
+ClipWait, 1
+Sleep 50
+
+Sleep 200
+clearClipboard()
+checkForExpiryDateOnPXSecondLine()
+siebelActivityCommentField()
+
+MouseClick
+Sleep, 50
+MouseClick
+Sleep 50
+SendInput ^{End}
+Sleep 50
+SendInput {Enter}
+Sleep 50
+SendInput {Ctrl Down}
+SendInput {Raw}v
+SendInput {Ctrl Up}
+ClipWait, 1
+Sleep 50
+SendInput {Enter}
+Sleep 50
+SendInput {Enter}
+Sleep 100
 
 keyFix()
 
