@@ -251,7 +251,143 @@ Gui, help: Destroy
 
 
 
+clearClipboard()
+checkIfScreenIsScrolledToTop()
+checkIfCurrentWindowIsCorrect()
+siebelActivityTab()
+checkForProgressBar()
+siebelActivityNewButton()
+checkForProgressBar()
+siebelActivityWhiteSpace()
+clickOnNewlyCreatedActivity()
+siebelActivityDescriptionField()
+checkForProgressBar()
 
+MouseClick
+MouseClick
+SendInput ^q ; Opens up Template Window
+Sleep 50
+
+checkForTemplateWindow()
+
+Sleep 50
+
+checkIfTemplateWindowIsScrolled()
+selectsEPSReturnPXServiceTemplate()
+clicksOnOkInTemplateWindow()
+checkIfPxIsScrolled()
+selectsPXNumberInProScriptAndCopyIt()
+siebelActivityCommentField()
+	
+
+MouseClick
+Sleep 100
+SendInput {Raw}EPS Px Services returned to spine
+SendInput {Space}
+Send {Ctrl Down}
+SendInput {Raw}v
+Send {Ctrl Up}
+Sleep 100
+
+
+
+
+removeCommentsField()
+setTyprOpenedInError()
+setStatusDone()
+
+
+
+Send {Ctrl Down}
+SendInput {Raw}b
+Send {Ctrl Up}
+Sleep 100
+
+siebelActivityDescriptionField()
+
+MouseClick ; Clicks on Description in Activity
+MouseClick
+Sleep 50
+SendInput ^q ; Opens up Template Window
+Sleep 50
+
+checkForTemplateWindow()
+
+Sleep 50
+
+checkIfTemplateWindowIsScrolled()
+selectsEPSReturnTemplate()
+clicksOnOkInTemplateWindow()
+siebelActivityDescriptionField()
+
+MouseClick
+Sleep, 50
+SendInput {Ctrl Down}
+SendInput {Raw}v
+SendInput {Ctrl Up}
+Sleep 100
+
+
+siebelSourceDownArrow()
+siebelSourcePXService()
+siebelActivityCommentField()
+
+MouseClick
+MouseClick
+SendInput ^{End}
+SendInput +{Home}
+SendInput {backspace}
+SendInput {backspace}
+SendInput ^{End}
+SendInput +{Home}
+SendInput {backspace}
+SendInput {backspace}
+SendInput ^{End}
+SendInput +{Home}
+SendInput {backspace}
+SendInput {backspace}
+SendInput ^{End}
+SendInput +{Home}
+SendInput {backspace}
+SendInput {backspace}
+
+Sleep 200
+clearClipboard()
+checkForExpiryDateOnPXFirstLine()
+siebelActivityCommentField()
+
+MouseClick
+Sleep, 50
+MouseClick
+Sleep 50
+SendInput {Ctrl Down}
+SendInput {Raw}v
+SendInput {Ctrl Up}
+ClipWait, 1
+Sleep 50
+
+Sleep 200
+clearClipboard()
+checkForExpiryDateOnPXSecondLine()
+siebelActivityCommentField()
+
+MouseClick
+Sleep, 50
+MouseClick
+Sleep 50
+SendInput ^{End}
+Sleep 50
+SendInput {Enter}
+Sleep 50
+SendInput {Ctrl Down}
+SendInput {Raw}v
+SendInput {Ctrl Up}
+ClipWait, 1
+Sleep 50
+SendInput {Enter}
+Sleep 50
+SendInput {Enter}
+Sleep 100
 
 
 
