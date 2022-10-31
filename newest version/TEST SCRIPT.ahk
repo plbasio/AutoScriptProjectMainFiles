@@ -211,14 +211,14 @@ CoordMode, Pixel, Screen
 ^Delete::
 BlockInput, MouseMove
 
-Loop, 100
+Loop, 50
 {
-Sleep 500
+Sleep 50
 var++
 Gui,help:Add, Text,     , %var%
 Gui,help:+toolwindow
 Gui,help:Show
-sleep,500
+sleep,400
 Gui, help: Destroy
 
 
@@ -239,104 +239,10 @@ Gui, help: Destroy
 
 
 clearClipboard()
-checkIfStickyNotesAreRunning()
-checkIfScreenIsScrolledToTop()
-checkIfCurrentWindowIsCorrect()
-siebelClickOnNewInNotes()
+lookForNHSOnPX()
+siebelPasteNHSNumber()
 checkForProgressBar()
-siebelClickOnDropDownArrowInNotes()
-siebelSelectDupPxAlert()
-siebelFlagContactTick()
-copyStickyNotes()
-siebelDescriptionFieldInActiveNotes()
-
-WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel app by its class
-Sleep 50
-MouseClick ; Selects and pastes the Sticky Notes
-Send {Ctrl Down}
-SendInput {Raw}v
-Send {Ctrl Up}
-ClipWait
-Sleep 50
-
-checkIfPxIsScrolled()
-selectsPXNumberInProScriptAndCopyIt()
-siebelDescriptionFieldInActiveNotes()
-
-Send ^{Home}
-Sleep 50
-SendInput {Enter}
-Sleep 50
-SendInput {Enter}
-Sleep 50
-SendInput {Up}
-Sleep 50
-SendInput {Up}
-Sleep 50
-SendInput {Up}
-Sleep 50
-Send {Ctrl Down}
-SendInput {Raw}v
-Send {Ctrl Up}
-ClipWait
-Sleep 50
-
-siebelFlagContactTick()
-siebelActivityTabDuplicate()
-checkForProgressBar()
-siebelActivityNewButton()
-checkForProgressBar()
-siebelActivityWhiteSpace()
-clickOnNewlyCreatedActivity()
-siebelActivityDescriptionField()
-checkForProgressBar()
-
-MouseClick ; Clicks on Description in Activity
-Sleep 50
-MouseClick
-Sleep 50
-SendInput ^q ; Opens up Template Window
-
-Sleep 50
-
-checkForTemplateWindow()
-
-Sleep 50
-
-checkIfTemplateWindowIsScrolled()
-selectsEPSReturnTemplate()
-clicksOnOkInTemplateWindow()
-siebelActivityDescriptionField()
-
-MouseClick
-MouseClick
-Sleep 50
-Send {Ctrl Down}
-SendInput {Raw}v
-Send {Ctrl Up}
-ClipWait
-Sleep 100
-
-clearClipboard()
-copyStickyNotes()
-
-WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel app by its class
-Sleep 100
-
-siebelActivityCommentField()
-
-MouseClick
-MouseClick
-Sleep 50
-Send {Ctrl Down}
-SendInput {Raw}v
-Send {Ctrl Up}
-ClipWait
-Sleep 100
-
-
-siebelSourceDownArrow()
-siebelSelectSourceDUP()
+checkForPatientNameToAppear()
 keyFix()
 clearClipboard()
 
@@ -354,11 +260,7 @@ clearClipboard()
 
 
 
-removeCommentsField()
-removeDescriptionField()
-setTyprOpenedInError()
-setStatusDone()
-checkForPatientNameToAppear()
+
 checkForProgressBar()
 }
 
@@ -425,7 +327,7 @@ Return ; Script Run Finished
 
 lookForNHSOnPX()
 {
-Loop, 2
+Loop, 5
 {
 ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\NHS_Number_Green.png
 if (ErrorLevel = 0)
@@ -434,7 +336,7 @@ SetDefaultMouseSpeed, 0
 VarPosX := OutputVarX + 110
 VarPosY := OutputVarY + 6
 MouseMove %VarPosX%, %VarPosY%
-Sleep 100
+Sleep 200
 MouseClick
 Sleep 50
 SendInput {Ctrl Down}
@@ -445,37 +347,8 @@ SendInput {Ctrl Down}
 SendInput {Raw}c
 SendInput {Ctrl Up}
 ClipWait, 1
-Sleep 50
-SetDefaultMouseSpeed, 2
-Break
-}
-else if (ErrorLevel != 0)
-{
-;
-}
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\NHS_Number_Purple.png
-if (ErrorLevel = 0)
-{
-SetDefaultMouseSpeed, 0
-VarPosX := OutputVarX + 110
-VarPosY := OutputVarY + 6
-MouseMove %VarPosX%, %VarPosY%
 Sleep 100
-MouseClick
-Sleep 50
-SendInput {Ctrl Down}
-SendInput {Raw}a
-SendInput {Ctrl Up}
-Sleep 50
-SendInput {Ctrl Down}
-SendInput {Raw}c
-SendInput {Ctrl Up}
-ClipWait, 1
-Sleep 50
 SetDefaultMouseSpeed, 2
-Break
-}
-}
 if RegExMatch(Clipboard, "(\d{10})", OutputVar)
 {
 Return
@@ -483,16 +356,48 @@ Return
 else
 {
 Sleep 100
+}
+}
+else if (ErrorLevel != 0)
+{
+Break
+}
+}
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\NHS_Number_Purple.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 110
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 200
 MouseClick
 Sleep 50
-Send {Ctrl Down}
+SendInput {Ctrl Down}
 SendInput {Raw}a
-Send {Ctrl Up}
+SendInput {Ctrl Up}
 Sleep 50
-Send {Ctrl Down}
+SendInput {Ctrl Down}
 SendInput {Raw}c
-Send {Ctrl Up}
+SendInput {Ctrl Up}
 ClipWait, 1
+Sleep 100
+SetDefaultMouseSpeed, 2
+if RegExMatch(Clipboard, "(\d{10})", OutputVar)
+{
+Return
+}
+else
+{
+Sleep 100
+}
+}
+else if (ErrorLevel != 0)
+{
+Break
+}
 }
 SetDefaultMouseSpeed, 0
 MouseMove 370, 484
@@ -1544,7 +1449,7 @@ Sleep 50
 
 checkForProgressBar()
 {
-Loop
+Loop, 20
 {
 	PixelSearch, OutputVarX, OutputVarY, 1299, 1027, 1383, 1035, 000080, 150, Fast ; Loop looks for progress bar to appear before moving forward
 
@@ -1553,14 +1458,14 @@ Sleep 10
 else
 break
 }
-Loop
+Loop, 20
 {
 	PixelSearch, OutputVarX, OutputVarY, 1299, 1027, 1383, 1035, 000080, 150, Fast ; Loop looks for progress bar to disappear before moving forward
 
 if (ErrorLevel = 0)
 Sleep 10
 else
-break
+Return
 }
 }
 
