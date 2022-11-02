@@ -79,7 +79,7 @@ CoordMode, Pixel, Screen
 `::
 SendInput {Raw}EPS
 Send {Ctrl Down}
-SendInput {Raw}v
+SendInput v
 Send {Ctrl Up} ; EPS + Script ID
 
 Return
@@ -140,7 +140,6 @@ checkForProgressBar()
 siebelActivityDescriptionField()
 
 MouseClick ; Clicks on Description in Activity
-Sleep 50
 MouseClick
 Sleep 50
 SendInput ^q ; Opens up Template Window
@@ -1136,9 +1135,9 @@ Break
 
 checkForExpiryDateOnPXFirstLine()
 {
-Loop, 3
+Loop, 2
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\PX_Expiry_Date_Green.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Green.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1177,7 +1176,7 @@ else
 Return
 }
 }
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\PX_Expiry_Date_Purple.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Purple.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1229,9 +1228,9 @@ Reload
 
 checkForExpiryDateOnPXSecondLine()
 {
-Loop, 3
+Loop, 2
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\PX_Expiry_Date_Green.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Green.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1270,7 +1269,7 @@ else
 Return
 }
 }
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\PX_Expiry_Date_Purple.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Purple.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -2144,7 +2143,7 @@ Sleep 50
 
 checkForProgressBar()
 {
-Loop, 20
+Loop, 50
 {
 	PixelSearch, OutputVarX, OutputVarY, 1299, 1027, 1383, 1035, 000080, 150, Fast ; Loop looks for progress bar to appear before moving forward
 
@@ -2153,7 +2152,7 @@ Sleep 50
 else
 break
 }
-Loop, 20
+Loop, 50
 {
 	PixelSearch, OutputVarX, OutputVarY, 1299, 1027, 1383, 1035, 000080, 150, Fast ; Loop looks for progress bar to disappear before moving forward
 
