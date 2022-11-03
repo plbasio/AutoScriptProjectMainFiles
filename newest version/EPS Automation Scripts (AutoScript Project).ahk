@@ -1963,13 +1963,14 @@ SendInput ^{End}
 SendInput +{Home}
 SendInput {backspace}
 SendInput {backspace}
+SendInput {Enter}
 Sleep 50
 SendInput {Raw}EPS
 Send {Ctrl Down}
 SendInput {Raw}v
 Send {Ctrl Up}
 ClipWait 1
-Sleep 50
+Sleep 100
 SetDefaultMouseSpeed, 2
 }
 }
