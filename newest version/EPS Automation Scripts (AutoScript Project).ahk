@@ -824,7 +824,7 @@ lookForNHSOnPX()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\NHS_Number_Green.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\NHS_Number_Green.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -860,7 +860,7 @@ Break
 }
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\NHS_Number_Purple.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\NHS_Number_Purple.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -909,7 +909,7 @@ checkForMedicationOnPX()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\Prescribed_Medication_Green.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\Prescribed_Medication_Green.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -948,7 +948,7 @@ else
 Return
 }
 }
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\Prescribed_Medication_Purple.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\Prescribed_Medication_Purple.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1002,7 +1002,7 @@ selectsPXNumberInProScriptAndCopyIt()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\Script_Id.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\Script_Id.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1046,7 +1046,7 @@ selectsPXNumberInProScriptAndCopyItForDuplicate()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\Script_Id.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\Script_Id.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1923,17 +1923,17 @@ SendInput ^{End}
 SendInput +{Home}
 Sleep 50
 Send {Ctrl Down}
-SendInput {Raw}c
+SendInput c
 Send {Ctrl Up}
 ClipWait, 1
-Sleep 50
-if RegExMatch(Clipboard, "(EPS.{6}-.{6}-.{6})", OutputVar)
+Sleep 100
+if RegExMatch(Clipboard, "(.{9}-.{6}-.{6})", OutputVar)
 {
 return
 }
 else
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\Script_Id.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\Script_Id.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1944,11 +1944,11 @@ Sleep 50
 MouseClick
 Sleep 50
 SendInput {Ctrl Down}
-SendInput {Raw}a
+SendInput a
 SendInput {Ctrl Up}
 Sleep 50
 SendInput {Ctrl Down}
-SendInput {Raw}c
+SendInput c
 SendInput {Ctrl Up}
 ClipWait, 1
 Sleep 50
@@ -1963,13 +1963,17 @@ SendInput ^{End}
 SendInput +{Home}
 SendInput {backspace}
 SendInput {backspace}
-SendInput {Enter}
+SendInput ^{End}
+SendInput +{Home}
+SendInput {backspace}
+SendInput {backspace}
 Sleep 50
 SendInput {Raw}EPS
 Send {Ctrl Down}
-SendInput {Raw}v
+SendInput v
 Send {Ctrl Up}
 ClipWait 1
+SendInput {Enter}
 Sleep 100
 SetDefaultMouseSpeed, 2
 }
