@@ -229,7 +229,7 @@ Send {Ctrl Down}
 SendInput {Raw}v
 Send {Ctrl Up}
 ClipWait, 1
-Sleep 100
+Sleep 200
 
 clearClipboard()
 checkIfPxIsScrolled()
@@ -285,8 +285,7 @@ checkIfScreenIsScrolledToTop()
 checkIfCurrentWindowIsCorrect()
 siebelClickOnNewInNotes()
 checkForProgressBar()
-siebelClickOnDropDownArrowInNotes()
-siebelSelectDupPxAlert()
+siebelTypeFieldInActiveNotes()
 siebelFlagContactTick()
 copyStickyNotes()
 siebelDescriptionFieldInActiveNotes()
@@ -755,7 +754,7 @@ siebelPerscriptionNoField()
 checkForWindowChangeGas()
 siebelPerscriptionNoFieldClearAndPastePX()
 clearClipboard()
-; siebelCheckPerscriptionFieldIfPXIsPastedIn()
+siebelCheckPerscriptionFieldIfPXIsPastedIn()
 clickOnPXAfterGAS()
 keyFix()
 
@@ -792,7 +791,7 @@ siebelPerscriptionNoField()
 checkForWindowChangeGas()
 siebelPerscriptionNoFieldClearAndPastePX()
 clearClipboard()
-; siebelCheckPerscriptionFieldIfPXIsPastedIn()
+siebelCheckPerscriptionFieldIfPXIsPastedIn()
 clickOnPXAfterGAS()
 keyFix()
 
@@ -1439,7 +1438,7 @@ clickOnNewlyCreatedActivity()
 Loop, 10
 {
 Sleep 200
-ImageSearch OutputVarX, OutputVarY, 492, 569, 1265, 720, *40 %A_ScriptDir%\Images\New_Activity_Other.png
+ImageSearch OutputVarX, OutputVarY, 492, 569, 1265, 720, *50 %A_ScriptDir%\Images\New_Activity_Other.png
 if (ErrorLevel = 0)
 {
 VarPosX := OutputVarX + 15
@@ -1624,6 +1623,7 @@ SetDefaultMouseSpeed, 0
 
 	MouseMove 1276, 702 ; Clicks on OK
 
+Sleep 100
 MouseClick
 MouseClick
 Sleep 100
@@ -1694,71 +1694,6 @@ SetDefaultMouseSpeed, 2
 
 
 
-siebelClickOnDropDownArrowInNotes()
-{
-SetDefaultMouseSpeed, 0
-
-	MouseMove 1593, 841 ; Moves over Typ dropdown menu arrow in Active Notes on AP Order Lines
-	
-SetDefaultMouseSpeed, 2
-}
-
-
-
-
-siebelSelectDupPxAlert()
-{
-SetDefaultMouseSpeed, 0
-
-MouseClick ; Clicks on dropdown arrow in newly created Active Note (If Flag Contact collumn is before Type collumn in siebel then add another MouseClick to fix the error)
-Sleep 50
-
-	MouseMove 1591, 881 ; Moves over Duplicate Perscription Alert
-
-MouseClick ; Clicks on Duplicate Perscription Alert
-Sleep 50
-
-SetDefaultMouseSpeed, 2
-}
-
-
-
-
-siebelFlagContactTick()
-{
-SetDefaultMouseSpeed, 0
-Sleep 50
-
-	MouseMove 1643, 841 ; Moves over Flag Contact Tick in newly created Active Note
-
-MouseClick
-Sleep 50
-MouseClick ; Ticks the Flag Contact in newly created Active Note
-Sleep 50
-
-SetDefaultMouseSpeed, 2
-}
-
-
-
-
-siebelDescriptionFieldInActiveNotes()
-{
-SetDefaultMouseSpeed, 0
-Sleep 50
-
-	MouseMove 1698, 839 ; Moves over Description Field in newly created Active Note
-	
-MouseClick
-Sleep 50
-MouseClick
-Sleep 50
-SetDefaultMouseSpeed, 2
-}
-
-
-
-
 siebelActivityTabDuplicate()
 {
 Loop
@@ -1790,6 +1725,146 @@ Reload
 
 
 
+siebelFlagContactTick()
+{
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *120 %A_ScriptDir%\Images\Flag_Contact_Label.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 14
+VarPosY := OutputVarY + 30
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+Sleep 100
+Break
+}
+else
+{
+Sleep 50
+}
+}
+Loop, 2
+{
+ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *120 %A_ScriptDir%\Images\Flag_Contact_Tick_Empty.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 7
+VarPosY := OutputVarY + 7
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+Sleep 100
+Break
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+Loop
+{
+ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *120 %A_ScriptDir%\Images\Flag_Contact_Ticked.png
+if (ErrorLevel = 0)
+{
+Return
+}
+else
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 7
+VarPosY := OutputVarY + 7
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+Return
+}
+}
+}
+
+
+
+
+siebelDescriptionFieldInActiveNotes()
+{
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 1260, 714, 1912, 1077, *120 %A_ScriptDir%\Images\Description_Field_Active_Notes.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 12
+VarPosY := OutputVarY + 30
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+MouseClick
+Sleep 100
+Break
+}
+else
+{
+Sleep 50
+}
+}
+}
+
+
+
+
+siebelTypeFieldInActiveNotes()
+{
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *100 %A_ScriptDir%\Images\Type_Field_Active_Notes.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 6
+VarPosY := OutputVarY + 28
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+Sleep 50
+Break
+}
+else
+{
+Sleep 50
+}
+}
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *100 %A_ScriptDir%\Images\Type_Field_Active_Notes_Down_Arrow.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 6
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+Sleep 100
+MouseMove 0, 40, 0, R
+Sleep 100
+MouseClick
+Sleep 100
+Break
+}
+else
+{
+Sleep 50
+}
+}
+}
+
+
+
+
+
 
 
 
@@ -1817,6 +1892,10 @@ MouseClick
 Sleep, 50
 MouseClick
 Sleep 50
+SendInput {backspace}
+SendInput {backspace}
+SendInput ^{End}
+SendInput +{Home}
 SendInput {backspace}
 SendInput {backspace}
 SendInput ^{End}
