@@ -1360,7 +1360,7 @@ siebelActivityTab()
 {
 Loop, 2
 {
-ImageSearch OutputVarX, OutputVarY, 470, 498, 1884, 622, *60 %A_ScriptDir%\Images\Activities_Tab.png
+ImageSearch OutputVarX, OutputVarY, 960, 520, 1884, 622, *60 %A_ScriptDir%\Images\Activities_Tab.png
 if (ErrorLevel = 0)
 {
 VarPosX := OutputVarX + 30
