@@ -679,7 +679,6 @@ BlockInput, MouseMove
 
 checkIfCurrentWindowIsCorrectForStockAndCheck()
 checkIfScreenIsScrolledToTop()
-siebelAddOosFlier()
 siebelStockAndCheckOrderStatusChanges()
 keyFix()
 
@@ -1738,7 +1737,7 @@ VarPosY := OutputVarY + 30
 MouseMove %VarPosX%, %VarPosY%
 Sleep 50
 MouseClick
-Sleep 100
+Sleep 50
 Break
 }
 else
@@ -1755,7 +1754,7 @@ SetDefaultMouseSpeed, 0
 VarPosX := OutputVarX + 7
 VarPosY := OutputVarY + 7
 MouseMove %VarPosX%, %VarPosY%
-Sleep 50
+Sleep 100
 MouseClick
 Sleep 100
 Break
@@ -1847,11 +1846,11 @@ VarPosY := OutputVarY + 6
 MouseMove %VarPosX%, %VarPosY%
 Sleep 50
 MouseClick
-Sleep 100
+Sleep 50
 MouseMove 0, 40, 0, R
-Sleep 100
+Sleep 50
 MouseClick
-Sleep 100
+Sleep 50
 Break
 }
 else
@@ -2147,7 +2146,9 @@ OrderStatusY := 295 ; Y coordinate of the "Order Status" down arrow in new Order
 MouseMove %OrderStatusX%, %OrderStatusY% ; "Order Status" downarrow coordinates in new Order window
 MouseClick
 Sleep 50
-MouseMove 682, 338 ; "Pending" option Coordinates in dropdown menu
+SendInput {Raw}Pending
+Sleep 50
+SendInput {Enter}
 MouseClick
 Sleep 50
 MouseMove 851, 704 ; Stock & Check button Coordinates in  new Order Window
@@ -2158,13 +2159,17 @@ SendInput {Enter}
 MouseMove %OrderStatusX%, %OrderStatusY% ; "Order Status" downarrow coordinates in new Order window
 MouseClick
 Sleep 50
-MouseMove 743, 311 ; "Open" option Coordinates in dropdown menu
+SendInput {Raw}Open
+Sleep 50
+SendInput {Enter}
 MouseClick
 Sleep 50
 MouseMove %OrderStatusX%, %OrderStatusY% ; "Order Status" downarrow coordinates in new Order window
 MouseClick
 Sleep 50
-MouseMove 739, 322 ; "Awaiting Payment" option Coordinates in dropdown menu
+SendInput {Raw}Awaiting Payment
+Sleep 50
+SendInput {Enter}
 MouseClick
 Sleep 50
 SetDefaultMouseSpeed, 2
@@ -2180,6 +2185,7 @@ MouseMove 752, 477 ; "Origin" downarrow field Coordinates (Siebel)
 MouseClick
 Sleep 50
 SendInput {Raw}Prescription - EPS
+Sleep 50
 SendInput {Enter}
 MouseMove 751, 373 ; "Source" downarrow field Coordinates (Siebel)
 MouseClick
