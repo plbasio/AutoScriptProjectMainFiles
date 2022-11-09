@@ -23,7 +23,8 @@ CoordMode, Mouse, Screen
 CoordMode, Pixel, Screen
 
 ^p::
-siebelTypeFieldInActiveNotes()
+FormatTime, CurrentDateTime,, dd/MM/yy
+SendInput %CurrentDateTime%
 return
 
 
@@ -311,10 +312,14 @@ CoordMode, Pixel, Screen
 
 ^Delete::
 BlockInput, MouseMove
+FormatTime, CurrentDateTime,, dd/MM/yy
+
+
+
 
 Loop, 50
 {
-Sleep 200
+Sleep 700
 var++
 Gui,help:Add, Text,     , %var%
 Gui,help:+toolwindow
@@ -367,13 +372,40 @@ SendInput {Enter}
 
 
 
-
-
-
+Sleep 100
+SendInput jdfkjfdjkf
+Sleep 100
+SendInput 9823472943
+Sleep 100
 
 siebelFlagContactUnTick()
+
+alchemyRequiresAttentionDownArrow()
+alchemyCommentFieldClear()
+
+SendInput, DUP {Space}
+SendInput %CurrentDateTime%
+
+Sleep 300
+
+SendInput ^{End}
+SendInput +{Home}
+SendInput {backspace}
+SendInput {backspace}
+SendInput ^{End}
+SendInput +{Home}
+SendInput {backspace}
+SendInput {backspace}
+
+checkIfScreenIsScrolledToTopInSearch()
+alchemyMoveToNextPxAndClickPostcode()
 checkForPatientNameToAppear()
-checkForProgressBar()
+
+
+
+
+
+
 }
 
 BlockInput, MouseMoveOff
@@ -383,6 +415,7 @@ Return ; Script Run Finished
 
 
 
+checkForProgressBar()
 
 
 
@@ -630,7 +663,7 @@ MouseMove %VarPosX%, %VarPosY%
 Sleep 50
 MouseClick
 SetDefaultMouseSpeed, 2
-Break
+Return
 }
 else
 {
@@ -687,7 +720,7 @@ if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
 VarPosX := OutputVarX + 220
-VarPosY := OutputVarY + 8
+VarPosY := OutputVarY + 30
 MouseMove %VarPosX%, %VarPosY%
 Sleep 50
 MouseClick
@@ -700,7 +733,7 @@ Sleep 50
 SendInput {Backspace}
 Sleep 50
 SetDefaultMouseSpeed, 2
-Break
+Return
 }
 else
 {
