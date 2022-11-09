@@ -126,6 +126,7 @@ CoordMode, Pixel, Screen
 
 +Delete::
 BlockInput, MouseMove
+Clipboard := Clipboard
 
 clearClipboard()
 checkIfScreenIsScrolledToTop()
@@ -150,8 +151,8 @@ checkForTemplateWindow()
 Sleep 50
 
 checkIfTemplateWindowIsScrolled()
-selectsEPSReturnTemplate()
-clicksOnOkInTemplateWindow()
+searchForEpsReturnTemplate()
+clickOkButtonInTemplateWindow()
 checkIfPxIsScrolled()
 selectsPXNumberInProScriptAndCopyIt()
 siebelActivityDescriptionField()
@@ -192,6 +193,7 @@ CoordMode, Pixel, Screen
 
 !Delete::
 BlockInput, MouseMove
+Clipboard := Clipboard
 
 clearClipboard()
 checkIfScreenIsScrolledToTop()
@@ -217,8 +219,8 @@ checkForTemplateWindow()
 Sleep 50
 
 checkIfTemplateWindowIsScrolled()
-selectsEPSReturnTemplate()
-clicksOnOkInTemplateWindow()
+searchForEpsReturnTemplate()
+clickOkButtonInTemplateWindow()
 checkForMedicationOnPX()
 siebelActivityCommentField()
 
@@ -278,6 +280,7 @@ CoordMode, Pixel, Screen
 
 ^Delete::
 BlockInput, MouseMove
+Clipboard := Clipboard
 
 clearClipboard()
 checkIfStickyNotesAreRunning()
@@ -343,8 +346,8 @@ checkForTemplateWindow()
 Sleep 50
 
 checkIfTemplateWindowIsScrolled()
-selectsEPSReturnTemplate()
-clicksOnOkInTemplateWindow()
+searchForEpsReturnTemplate()
+clickOkButtonInTemplateWindow()
 siebelActivityDescriptionField()
 
 MouseClick
@@ -408,6 +411,7 @@ CoordMode, Pixel, Screen
 
 !Insert::
 BlockInput, MouseMove
+Clipboard := Clipboard
 
 clearClipboard()
 checkIfScreenIsScrolledToTop()
@@ -431,8 +435,8 @@ checkForTemplateWindow()
 Sleep 50
 
 checkIfTemplateWindowIsScrolled()
-selectsEPSReturnPXServiceTemplate()
-clicksOnOkInTemplateWindow()
+searchForEpsPxServiceReturnTemplate()
+clickOkButtonInTemplateWindow()
 checkIfPxIsScrolled()
 selectsPXNumberInProScriptAndCopyIt()
 siebelActivityCommentField()
@@ -464,8 +468,8 @@ checkForTemplateWindow()
 Sleep 50
 
 checkIfTemplateWindowIsScrolled()
-selectsEPSReturnTemplate()
-clicksOnOkInTemplateWindow()
+searchForEpsPxServiceReturnTemplate()
+clickOkButtonInTemplateWindow()
 siebelActivityDescriptionField()
 
 MouseClick
@@ -565,6 +569,7 @@ CoordMode, Pixel, Screen
 
 +Insert::
 BlockInput, MouseMove
+Clipboard := Clipboard
 
 checkIfStickyNotesAreRunning()
 checkIfSiebelOrderNoIsCopied()
@@ -592,8 +597,8 @@ checkForTemplateWindow()
 Sleep 50
 
 checkIfTemplateWindowIsScrolled()
-selectsEPSShortfallTemplate()
-clicksOnOkInTemplateWindow()
+searchForEpsShortfallTemplate()
+clickOkButtonInTemplateWindow()
 siebelSiebelOrderNoField()
 clearClipboard()
 copyStickyNotes()
@@ -708,6 +713,7 @@ colors := "97E8A2, 6666CC" ; Array of colors used by PixelSearch function (NHS n
 +PgDn::
 SetDefaultMouseSpeed, 0
 BlockInput, MouseMove
+Clipboard := Clipboard
 
 clearClipboard()
 lookForNHSOnPX()
@@ -742,6 +748,7 @@ CoordMode, Pixel, Screen
 
 +Home::
 BlockInput, MouseMove
+Clipboard := Clipboard
 
 clearClipboard()
 checkIfScreenIsScrolledToTop()
@@ -779,6 +786,7 @@ CoordMode, Pixel, Screen
 
 +PgUp::
 BlockInput, MouseMove
+Clipboard := Clipboard
 
 clearClipboard()
 checkIfScreenIsScrolledToTop()
@@ -1386,7 +1394,6 @@ siebelActivityNewButton()
 {
 Loop, 10
 {
-Sleep 200
 ImageSearch OutputVarX, OutputVarY, 565, 570, 613, 593, *100 %A_ScriptDir%\Images\New_Activity_Button.png
 if (ErrorLevel = 0)
 {
@@ -1399,17 +1406,17 @@ MouseClick
 SetDefaultMouseSpeed, 2
 Return
 }
-}
-ImageSearch OutputVarX, OutputVarY, 565, 570, 613, 593, *100 %A_ScriptDir%\Images\New_Activity_Button.png
-if (ErrorLevel != 0)
+else (ErrorLevel != 0)
 {
+sleep 50
+}
+}
 SetDefaultMouseSpeed, 0
 MouseMove 370, 484
 MouseClick
 SetDefaultMouseSpeed, 2
 MsgBox, 4096, Error, "Script Failed - Could not find New Activity button. Press F12 to Exit the error message"
 Reload
-}
 }
 
 
@@ -1422,9 +1429,9 @@ SetDefaultMouseSpeed, 0
 	MouseMove 776, 483 ; Moves the cursor away from activities field after creating new activity
 
 MouseClick
-Sleep 100
+Sleep 50
 MouseClick
-Sleep 100
+Sleep 50
 MouseClick
 SetDefaultMouseSpeed, 2
 }
@@ -1434,10 +1441,9 @@ SetDefaultMouseSpeed, 2
 
 clickOnNewlyCreatedActivity()
 {
-Loop, 10
+Loop, 20
 {
-Sleep 200
-ImageSearch OutputVarX, OutputVarY, 492, 569, 1265, 720, *50 %A_ScriptDir%\Images\New_Activity_Other.png
+ImageSearch OutputVarX, OutputVarY, 492, 569, 1265, 650, *50 %A_ScriptDir%\Images\New_Activity_Other.png
 if (ErrorLevel = 0)
 {
 VarPosX := OutputVarX + 15
@@ -1447,6 +1453,10 @@ MouseMove %VarPosX%, %VarPosY%
 MouseClick
 SetDefaultMouseSpeed, 2
 Return
+}
+else if (ErrorLevel != 0)
+{
+sleep 50
 }
 }
 SetDefaultMouseSpeed, 0
@@ -1616,56 +1626,240 @@ SetDefaultMouseSpeed, 2
 
 
 
-clicksOnOkInTemplateWindow()
+
+
+
+
+	; === Template Window Coordinates ===	
+
+
+
+
+checkForTemplateWindow()
 {
-SetDefaultMouseSpeed, 0
+	PixelGetColor, color, 968, 409 ; Looks for pixel (load up the template window and select pixel that is behind the blue top of the window) and waits for the template window to load before progressing
+While color = 0xffffff 
+{
+	PixelGetColor, color, 968, 409 ; Loop keeps looking for pixel until it changes to blue (top of the template window)
+sleep 50
+}
+}
 
-	MouseMove 1276, 702 ; Clicks on OK
 
+
+
+checkIfTemplateWindowIsScrolled()
+{
+Loop
+{
 Sleep 100
+PixelGetColor, color, 1348, 638
+if (color = 0xFFFFFF)
+{
+SetDefaultMouseSpeed, 0
+MouseMove 1349, 683 ; Moves the mouse over the down arrow in template window
+MouseClick ; Scrolls Down in the Template Window
+Sleep 50
 MouseClick
+Sleep 50
 MouseClick
-Sleep 100
+Sleep 50
 SetDefaultMouseSpeed, 2
+break
+}
+else
+{
+break
+}
+}
 }
 
 
 
 
-selectsEPSReturnTemplate()
+searchForEpsShortfallTemplate()
+{
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Shortfall_Template_White.png
+if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
-
-	MouseMove 1273, 657 ; Selects EPS Return Template
-	
+VarPosX := OutputVarX + 400
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
 MouseClick
 SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Shortfall_Template_Yellow.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 400
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+SetDefaultMouseSpeed, 0
+MouseMove 370, 484
+MouseClick
+MsgBox, 4096, Error, "Cannot find the EPS Shortfall Template. Press F12 to Exit the error message"
+SetDefaultMouseSpeed, 2
+Reload
 }
 
 
 
 
-selectsEPSReturnPXServiceTemplate()
+searchForEpsReturnTemplate()
+{
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Return_Template_White.png
+if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
-
-	MouseMove 1276, 679 ; Selects EPS Return Template
-
+VarPosX := OutputVarX + 400
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
 MouseClick
 SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Return_Template_Yellow.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 400
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+SetDefaultMouseSpeed, 0
+MouseMove 370, 484
+MouseClick
+MsgBox, 4096, Error, "Cannot find the EPS Return Template. Press F12 to Exit the error message"
+SetDefaultMouseSpeed, 2
+Reload
 }
 
 
 
 
-selectsEPSShortfallTemplate()
+searchForEpsPxServiceReturnTemplate()
+{
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Return_PXService_Template_White.png
+if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
-
-	MouseMove 1278, 633 ; Selects EPS Shortfall Template
-	
+VarPosX := OutputVarX + 400
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
 MouseClick
 SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Return_PXService_Template_Yellow.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 400
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+SetDefaultMouseSpeed, 0
+MouseMove 370, 484
+MouseClick
+MsgBox, 4096, Error, "Cannot find the EPS Return PX Service Template. Press F12 to Exit the error message"
+SetDefaultMouseSpeed, 2
+Reload
+}
+
+
+
+
+
+clickOkButtonInTemplateWindow()
+{
+Loop, 10
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *120 %A_ScriptDir%\Images\Ok_Button_Template_Window.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 15
+VarPosY := OutputVarY + 10
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+MouseClick
+Sleep 50
+SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+SetDefaultMouseSpeed, 0
+MouseMove 370, 484
+MouseClick
+MsgBox, 4096, Error, "Cannot find OK button in template window. Press F12 to Exit the error message"
+SetDefaultMouseSpeed, 2
+Reload
 }
 
 
@@ -2080,59 +2274,6 @@ SetDefaultMouseSpeed, 2
 
 
 
-
-
-	; === Template Window Coordinates ===	
-
-
-
-
-checkForTemplateWindow()
-{
-	PixelGetColor, color, 968, 409 ; Looks for pixel (load up the template window and select pixel that is behind the blue top of the window) and waits for the template window to load before progressing
-While color = 0xffffff 
-{
-	PixelGetColor, color, 968, 409 ; Loop keeps looking for pixel until it changes to blue (top of the template window)
-sleep 50
-}
-}
-
-
-
-
-checkIfTemplateWindowIsScrolled()
-{
-Loop
-{
-Sleep 100
-PixelGetColor, color, 1348, 638
-if (color = 0xFFFFFF)
-{
-SetDefaultMouseSpeed, 0
-MouseMove 1349, 683 ; Moves the mouse over the down arrow in template window
-MouseClick ; Scrolls Down in the Template Window
-Sleep 50
-MouseClick
-Sleep 50
-MouseClick
-Sleep 50
-SetDefaultMouseSpeed, 2
-break
-}
-else
-{
-break
-}
-}
-}
-
-
-
-
-
-
-
-
 	; === Stock & Check Coordinates ===	
 
 
@@ -2233,7 +2374,7 @@ Sleep 50
 
 checkForProgressBar()
 {
-Loop, 50
+Loop, 100
 {
 	PixelSearch, OutputVarX, OutputVarY, 1299, 1027, 1383, 1035, 000080, 150, Fast ; Loop looks for progress bar to appear before moving forward
 
@@ -2242,7 +2383,7 @@ Sleep 50
 else
 break
 }
-Loop, 50
+Loop, 100
 {
 	PixelSearch, OutputVarX, OutputVarY, 1299, 1027, 1383, 1035, 000080, 150, Fast ; Loop looks for progress bar to disappear before moving forward
 

@@ -2,11 +2,23 @@
 
 
 
+
 #UseHook
 CoordMode, Mouse, Screen
 CoordMode, Pixel, Screen
 
 ^p::
+searchForEpsPxServiceReturnTemplate()
+Return
+
+
+
+
+
+
+
+
+
 
 SafePaste() 
 {
@@ -19,7 +31,7 @@ ControlGetFocus, vCtlClassNN, A
 ControlGet, hCtl, Hwnd,, % vCtlClassNN, A
 SendMessage, 0x302,,,, % "ahk_id " hCtl ;WM_PASTE := 0x302
 }
-return
+
 
 
 
@@ -109,18 +121,6 @@ Return
 
 
 
-
-
-
-
-#UseHook
-SetBatchLines, -1
-CoordMode, Mouse, Screen
-CoordMode, Pixel, Screen
-
-^p::
-checkForExpiryDateOnPX2()
-Return
 
 
 
@@ -254,7 +254,7 @@ CoordMode, Pixel, Screen
 
 ^Delete::
 BlockInput, MouseMove
-
+Clipboard := Clipboard
 Loop, 50
 {
 Sleep 50
@@ -262,12 +262,90 @@ var++
 Gui,help:Add, Text,     , %var%
 Gui,help:+toolwindow
 Gui,help:Show
-sleep,400
+sleep 100
 Gui, help: Destroy
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+clearClipboard()
+selectsPXNumberInProScriptAndCopyIt()
+siebelPerscriptionNoField()
+siebelPerscriptionNoFieldClearAndPastePX()
+SafePaste()
+clearClipboard()
+siebelCheckPerscriptionFieldIfPXIsPastedIn()
+SafePaste()
+clickOnPXAfterGAS()
+keyFix()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+BlockInput, MouseMoveOff
+MsgBox Meczyk wygrany, kurczak podany
+Return ; Script Run Finished
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#UseHook
+SetBatchLines, -1
+CoordMode, Mouse, Screen
+CoordMode, Pixel, Screen
+
+^Insert::
+BlockInput, MouseMove
+Clipboard := Clipboard
+Loop, 50
+{
+Sleep 50
+var++
+Gui,help:Add, Text,     , %var%
+Gui,help:+toolwindow
+Gui,help:Show
+sleep 300
+Gui, help: Destroy
 
 
 
@@ -294,8 +372,10 @@ clickOnNewlyCreatedActivity()
 siebelActivityDescriptionField()
 checkForProgressBar()
 
+MouseClick ; Clicks on Description in Activity
+Sleep 50
 MouseClick
-MouseClick
+Sleep 50
 SendInput ^q ; Opens up Template Window
 Sleep 50
 
@@ -304,134 +384,36 @@ checkForTemplateWindow()
 Sleep 50
 
 checkIfTemplateWindowIsScrolled()
-selectsEPSReturnPXServiceTemplate()
-clicksOnOkInTemplateWindow()
+searchForEpsReturnTemplate()
+clickOkButtonInTemplateWindow()
+checkForMedicationOnPX()
+siebelActivityCommentField()
+
+MouseClick
+MouseClick
+Sleep 50
+Send {Ctrl Down}
+SendInput {Raw}v
+Send {Ctrl Up}
+ClipWait, 1
+Sleep 200
+
+clearClipboard()
 checkIfPxIsScrolled()
 selectsPXNumberInProScriptAndCopyIt()
-siebelActivityCommentField()
-	
-
-MouseClick
-Sleep 100
-SendInput {Raw}EPS Px Services returned to spine
-SendInput {Space}
-Send {Ctrl Down}
-SendInput {Raw}v
-Send {Ctrl Up}
-Sleep 100
-
-
-
-
-removeCommentsField()
-setTyprOpenedInError()
-setStatusDone()
-
-
-
-Send {Ctrl Down}
-SendInput {Raw}b
-Send {Ctrl Up}
-Sleep 100
-
-siebelActivityDescriptionField()
-
-MouseClick ; Clicks on Description in Activity
-MouseClick
-Sleep 50
-SendInput ^q ; Opens up Template Window
-Sleep 50
-
-checkForTemplateWindow()
-
-Sleep 50
-
-checkIfTemplateWindowIsScrolled()
-selectsEPSReturnTemplate()
-clicksOnOkInTemplateWindow()
 siebelActivityDescriptionField()
 
 MouseClick
-Sleep, 50
-SendInput {Ctrl Down}
+MouseClick
+Sleep 50
+Send {Ctrl Down}
 SendInput {Raw}v
-SendInput {Ctrl Up}
-Sleep 100
+Send {Ctrl Up}
+Sleep 50
 
 
 siebelSourceDownArrow()
-siebelSourcePXService()
-siebelActivityCommentField()
-
-MouseClick
-MouseClick
-SendInput ^{End}
-SendInput +{Home}
-SendInput {backspace}
-SendInput {backspace}
-SendInput ^{End}
-SendInput +{Home}
-SendInput {backspace}
-SendInput {backspace}
-SendInput ^{End}
-SendInput +{Home}
-SendInput {backspace}
-SendInput {backspace}
-SendInput ^{End}
-SendInput +{Home}
-SendInput {backspace}
-SendInput {backspace}
-
-Sleep 200
-clearClipboard()
-checkForExpiryDateOnPXFirstLine()
-siebelActivityCommentField()
-
-MouseClick
-Sleep, 50
-MouseClick
-Sleep 50
-SendInput {Ctrl Down}
-SendInput {Raw}v
-SendInput {Ctrl Up}
-ClipWait, 1
-Sleep 50
-
-Sleep 200
-clearClipboard()
-checkForExpiryDateOnPXSecondLine()
-siebelActivityCommentField()
-
-MouseClick
-Sleep, 50
-MouseClick
-Sleep 50
-SendInput ^{End}
-Sleep 50
-SendInput {Enter}
-Sleep 50
-SendInput {Ctrl Down}
-SendInput {Raw}v
-SendInput {Ctrl Up}
-ClipWait, 1
-Sleep 50
-SendInput {Enter}
-Sleep 50
-SendInput {Enter}
-Sleep 100
-
-
-
-
-removeDescriptionField()
-removeCommentsField()
-setTyprOpenedInError()
-setStatusDone()
-
-
-
-
-
+siebelSelectSourceMED()
 keyFix()
 
 
@@ -446,10 +428,15 @@ keyFix()
 
 
 
-
-
+setTyprOpenedInError()
+removeCommentsField()
+removeDescriptionField()
+setStatusDone()
 checkForPatientNameToAppear()
 checkForProgressBar()
+
+
+
 }
 
 BlockInput, MouseMoveOff
@@ -517,7 +504,7 @@ lookForNHSOnPX()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\NHS_Number_Green.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100, *TransBlack %A_ScriptDir%\Images\NHS_Number_Green.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -534,7 +521,7 @@ Sleep 50
 SendInput {Ctrl Down}
 SendInput {Raw}c
 SendInput {Ctrl Up}
-ClipWait, 1
+ClipWait, 0.2
 Sleep 100
 SetDefaultMouseSpeed, 2
 if RegExMatch(Clipboard, "(\d{10})", OutputVar)
@@ -553,7 +540,7 @@ Break
 }
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\NHS_Number_Purple.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100, *TransBlack %A_ScriptDir%\Images\NHS_Number_Purple.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -570,7 +557,7 @@ Sleep 50
 SendInput {Ctrl Down}
 SendInput {Raw}c
 SendInput {Ctrl Up}
-ClipWait, 1
+ClipWait, 0.2
 Sleep 100
 SetDefaultMouseSpeed, 2
 if RegExMatch(Clipboard, "(\d{10})", OutputVar)
@@ -602,7 +589,7 @@ checkForMedicationOnPX()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\Prescribed_Medication_Green.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100, *TransBlack %A_ScriptDir%\Images\Prescribed_Medication_Green.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -641,7 +628,7 @@ else
 Return
 }
 }
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\Prescribed_Medication_Purple.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100, *TransBlack %A_ScriptDir%\Images\Prescribed_Medication_Purple.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -695,7 +682,7 @@ selectsPXNumberInProScriptAndCopyIt()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\Script_Id.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100, *TransBlack %A_ScriptDir%\Images\Script_Id.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -739,7 +726,7 @@ selectsPXNumberInProScriptAndCopyItForDuplicate()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\Script_Id.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100, *TransBlack %A_ScriptDir%\Images\Script_Id.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -779,7 +766,7 @@ checkIfPxIsScrolled()
 {
 Loop
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *25 %A_ScriptDir%\Images\PX_Scroll_Up_Arrow.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *25, *TransBlack %A_ScriptDir%\Images\PX_Scroll_Up_Arrow.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -799,7 +786,7 @@ else if (ErrorLevel != 0)
 {
 ;
 }
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *25 %A_ScriptDir%\Images\PX_Scroll_Up_Arrow_2.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *25, *TransBlack %A_ScriptDir%\Images\PX_Scroll_Up_Arrow_2.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -827,9 +814,9 @@ Break
 
 checkForExpiryDateOnPXFirstLine()
 {
-Loop, 3
+Loop, 2
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\PX_Expiry_Date_Green.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100, *TransBlack %A_ScriptDir%\Images\PX_Expiry_Date_Green.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -868,7 +855,7 @@ else
 Return
 }
 }
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\PX_Expiry_Date_Purple.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Purple.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -920,9 +907,9 @@ Reload
 
 checkForExpiryDateOnPXSecondLine()
 {
-Loop, 3
+Loop, 2
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\PX_Expiry_Date_Green.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Green.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -961,7 +948,7 @@ else
 Return
 }
 }
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\PX_Expiry_Date_Purple.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Purple.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1051,9 +1038,9 @@ Return
 
 siebelActivityTab()
 {
-Loop, 2
+Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, 470, 498, 1884, 622, *60 %A_ScriptDir%\Images\Activities_Tab.png
+ImageSearch OutputVarX, OutputVarY, 960, 520, 1884, 622, *60, *TransBlack %A_ScriptDir%\Images\Activities_Tab.png
 if (ErrorLevel = 0)
 {
 VarPosX := OutputVarX + 30
@@ -1063,6 +1050,10 @@ MouseMove %VarPosX%, %VarPosY%
 MouseClick
 SetDefaultMouseSpeed, 2
 Return
+}
+else
+{
+sleep 50
 }
 }
 SetDefaultMouseSpeed, 0
@@ -1080,8 +1071,7 @@ siebelActivityNewButton()
 {
 Loop, 10
 {
-Sleep 200
-ImageSearch OutputVarX, OutputVarY, 565, 570, 613, 593, *100 %A_ScriptDir%\Images\New_Activity_Button.png
+ImageSearch OutputVarX, OutputVarY, 565, 570, 613, 593, *100, *TransBlack %A_ScriptDir%\Images\New_Activity_Button.png
 if (ErrorLevel = 0)
 {
 VarPosX := OutputVarX + 15
@@ -1093,17 +1083,17 @@ MouseClick
 SetDefaultMouseSpeed, 2
 Return
 }
-}
-ImageSearch OutputVarX, OutputVarY, 565, 570, 613, 593, *100 %A_ScriptDir%\Images\New_Activity_Button.png
-if (ErrorLevel != 0)
+else (ErrorLevel != 0)
 {
+sleep 50
+}
+}
 SetDefaultMouseSpeed, 0
 MouseMove 370, 484
 MouseClick
 SetDefaultMouseSpeed, 2
 MsgBox, 4096, Error, "Script Failed - Could not find New Activity button. Press F12 to Exit the error message"
 Reload
-}
 }
 
 
@@ -1116,9 +1106,9 @@ SetDefaultMouseSpeed, 0
 	MouseMove 776, 483 ; Moves the cursor away from activities field after creating new activity
 
 MouseClick
-Sleep 100
+Sleep 50
 MouseClick
-Sleep 100
+Sleep 50
 MouseClick
 SetDefaultMouseSpeed, 2
 }
@@ -1128,10 +1118,9 @@ SetDefaultMouseSpeed, 2
 
 clickOnNewlyCreatedActivity()
 {
-Loop, 10
+Loop, 20
 {
-Sleep 200
-ImageSearch OutputVarX, OutputVarY, 492, 569, 1265, 720, *40 %A_ScriptDir%\Images\New_Activity_Other.png
+ImageSearch OutputVarX, OutputVarY, 492, 569, 1265, 650, *50, *TransBlack %A_ScriptDir%\Images\New_Activity_Other.png
 if (ErrorLevel = 0)
 {
 VarPosX := OutputVarX + 15
@@ -1141,6 +1130,10 @@ MouseMove %VarPosX%, %VarPosY%
 MouseClick
 SetDefaultMouseSpeed, 2
 Return
+}
+else if (ErrorLevel != 0)
+{
+sleep 50
 }
 }
 SetDefaultMouseSpeed, 0
@@ -1310,55 +1303,240 @@ SetDefaultMouseSpeed, 2
 
 
 
-clicksOnOkInTemplateWindow()
+
+
+
+
+	; === Template Window Coordinates ===	
+
+
+
+
+checkForTemplateWindow()
 {
-SetDefaultMouseSpeed, 0
+	PixelGetColor, color, 968, 409 ; Looks for pixel (load up the template window and select pixel that is behind the blue top of the window) and waits for the template window to load before progressing
+While color = 0xffffff 
+{
+	PixelGetColor, color, 968, 409 ; Loop keeps looking for pixel until it changes to blue (top of the template window)
+sleep 50
+}
+}
 
-	MouseMove 1276, 702 ; Clicks on OK
 
-MouseClick
-MouseClick
+
+
+checkIfTemplateWindowIsScrolled()
+{
+Loop
+{
 Sleep 100
+PixelGetColor, color, 1348, 638
+if (color = 0xFFFFFF)
+{
+SetDefaultMouseSpeed, 0
+MouseMove 1349, 683 ; Moves the mouse over the down arrow in template window
+MouseClick ; Scrolls Down in the Template Window
+Sleep 50
+MouseClick
+Sleep 50
+MouseClick
+Sleep 50
 SetDefaultMouseSpeed, 2
+break
+}
+else
+{
+break
+}
+}
 }
 
 
 
 
-selectsEPSReturnTemplate()
+searchForEpsShortfallTemplate()
+{
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Shortfall_Template_White.png
+if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
-
-	MouseMove 1273, 657 ; Selects EPS Return Template
-	
+VarPosX := OutputVarX + 400
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
 MouseClick
 SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Shortfall_Template_Yellow.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 400
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+SetDefaultMouseSpeed, 0
+MouseMove 370, 484
+MouseClick
+MsgBox, 4096, Error, "Cannot find the EPS Shortfall Template. Press F12 to Exit the error message"
+SetDefaultMouseSpeed, 2
+Reload
 }
 
 
 
 
-selectsEPSReturnPXServiceTemplate()
+searchForEpsReturnTemplate()
+{
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Return_Template_White.png
+if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
-
-	MouseMove 1276, 679 ; Selects EPS Return Template
-
+VarPosX := OutputVarX + 400
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
 MouseClick
 SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+Loop
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Return_Template_Yellow.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 400
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Return
+}
+}
+SetDefaultMouseSpeed, 0
+MouseMove 370, 484
+MouseClick
+MsgBox, 4096, Error, "Cannot find the EPS Return Template. Press F12 to Exit the error message"
+SetDefaultMouseSpeed, 2
+Reload
 }
 
 
 
 
-selectsEPSShortfallTemplate()
+searchForEpsPxServiceReturnTemplate()
+{
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Return_PXService_Template_White.png
+if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
-
-	MouseMove 1278, 633 ; Selects EPS Shortfall Template
-	
+VarPosX := OutputVarX + 400
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
 MouseClick
 SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Return_PXService_Template_Yellow.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 400
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+SetDefaultMouseSpeed, 0
+MouseMove 370, 484
+MouseClick
+MsgBox, 4096, Error, "Cannot find the EPS Return PX Service Template. Press F12 to Exit the error message"
+SetDefaultMouseSpeed, 2
+Reload
+}
+
+
+
+
+
+clickOkButtonInTemplateWindow()
+{
+Loop, 10
+{
+ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *120 %A_ScriptDir%\Images\Ok_Button_Template_Window.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 15
+VarPosY := OutputVarY + 10
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+MouseClick
+Sleep 50
+SetDefaultMouseSpeed, 2
+Return
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+SetDefaultMouseSpeed, 0
+MouseMove 370, 484
+MouseClick
+MsgBox, 4096, Error, "Cannot find OK button in template window. Press F12 to Exit the error message"
+SetDefaultMouseSpeed, 2
+Reload
 }
 
 
@@ -1380,71 +1558,6 @@ SetDefaultMouseSpeed, 0
 	MouseMove 1422, 899 ; Moves over New button in Active Notes on AP Order Lines
 	
 MouseClick ; Clicks on New to create a New Active Note
-SetDefaultMouseSpeed, 2
-}
-
-
-
-
-siebelClickOnDropDownArrowInNotes()
-{
-SetDefaultMouseSpeed, 0
-
-	MouseMove 1593, 841 ; Moves over Typ dropdown menu arrow in Active Notes on AP Order Lines
-	
-SetDefaultMouseSpeed, 2
-}
-
-
-
-
-siebelSelectDupPxAlert()
-{
-SetDefaultMouseSpeed, 0
-
-MouseClick ; Clicks on dropdown arrow in newly created Active Note (If Flag Contact collumn is before Type collumn in siebel then add another MouseClick to fix the error)
-Sleep 50
-
-	MouseMove 1591, 881 ; Moves over Duplicate Perscription Alert
-
-MouseClick ; Clicks on Duplicate Perscription Alert
-Sleep 50
-
-SetDefaultMouseSpeed, 2
-}
-
-
-
-
-siebelFlagContactTick()
-{
-SetDefaultMouseSpeed, 0
-Sleep 50
-
-	MouseMove 1643, 841 ; Moves over Flag Contact Tick in newly created Active Note
-
-MouseClick
-Sleep 50
-MouseClick ; Ticks the Flag Contact in newly created Active Note
-Sleep 50
-
-SetDefaultMouseSpeed, 2
-}
-
-
-
-
-siebelDescriptionFieldInActiveNotes()
-{
-SetDefaultMouseSpeed, 0
-Sleep 50
-
-	MouseMove 1698, 839 ; Moves over Description Field in newly created Active Note
-	
-MouseClick
-Sleep 50
-MouseClick
-Sleep 50
 SetDefaultMouseSpeed, 2
 }
 
@@ -1482,6 +1595,146 @@ Reload
 
 
 
+siebelFlagContactTick()
+{
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *120 %A_ScriptDir%\Images\Flag_Contact_Label.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 14
+VarPosY := OutputVarY + 30
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+Sleep 50
+Break
+}
+else
+{
+Sleep 50
+}
+}
+Loop, 2
+{
+ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *120 %A_ScriptDir%\Images\Flag_Contact_Tick_Empty.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 7
+VarPosY := OutputVarY + 7
+MouseMove %VarPosX%, %VarPosY%
+Sleep 100
+MouseClick
+Sleep 100
+Break
+}
+else if (ErrorLevel != 0)
+{
+Sleep 50
+}
+}
+Loop
+{
+ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *120 %A_ScriptDir%\Images\Flag_Contact_Ticked.png
+if (ErrorLevel = 0)
+{
+Return
+}
+else
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 7
+VarPosY := OutputVarY + 7
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+Return
+}
+}
+}
+
+
+
+
+siebelDescriptionFieldInActiveNotes()
+{
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 1260, 714, 1912, 1077, *120 %A_ScriptDir%\Images\Description_Field_Active_Notes.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 12
+VarPosY := OutputVarY + 30
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+MouseClick
+Sleep 100
+Break
+}
+else
+{
+Sleep 50
+}
+}
+}
+
+
+
+
+siebelTypeFieldInActiveNotes()
+{
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *100 %A_ScriptDir%\Images\Type_Field_Active_Notes.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 6
+VarPosY := OutputVarY + 28
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+Sleep 50
+Break
+}
+else
+{
+Sleep 50
+}
+}
+Loop, 5
+{
+ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *100 %A_ScriptDir%\Images\Type_Field_Active_Notes_Down_Arrow.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 6
+VarPosY := OutputVarY + 6
+MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
+Sleep 50
+MouseMove 0, 40, 0, R
+Sleep 50
+MouseClick
+Sleep 50
+Break
+}
+else
+{
+Sleep 50
+}
+}
+}
+
+
+
+
+
 
 
 
@@ -1515,6 +1768,10 @@ SendInput ^{End}
 SendInput +{Home}
 SendInput {backspace}
 SendInput {backspace}
+SendInput ^{End}
+SendInput +{Home}
+SendInput {backspace}
+SendInput {backspace}
 Sleep 50
 SendInput {Raw}EPS
 Send {Ctrl Down}
@@ -1536,17 +1793,17 @@ SendInput ^{End}
 SendInput +{Home}
 Sleep 50
 Send {Ctrl Down}
-SendInput {Raw}c
+SendInput c
 Send {Ctrl Up}
 ClipWait, 1
-Sleep 50
-if RegExMatch(Clipboard, "(EPS.{6}-.{6}-.{6})", OutputVar)
+Sleep 100
+if RegExMatch(Clipboard, "(.{9}-.{6}-.{6})", OutputVar)
 {
 return
 }
 else
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *150 %A_ScriptDir%\Images\Script_Id.png
+ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\Script_Id.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1557,11 +1814,11 @@ Sleep 50
 MouseClick
 Sleep 50
 SendInput {Ctrl Down}
-SendInput {Raw}a
+SendInput a
 SendInput {Ctrl Up}
 Sleep 50
 SendInput {Ctrl Down}
-SendInput {Raw}c
+SendInput c
 SendInput {Ctrl Up}
 ClipWait, 1
 Sleep 50
@@ -1576,13 +1833,18 @@ SendInput ^{End}
 SendInput +{Home}
 SendInput {backspace}
 SendInput {backspace}
+SendInput ^{End}
+SendInput +{Home}
+SendInput {backspace}
+SendInput {backspace}
 Sleep 50
 SendInput {Raw}EPS
 Send {Ctrl Down}
-SendInput {Raw}v
+SendInput v
 Send {Ctrl Up}
 ClipWait 1
-Sleep 50
+SendInput {Enter}
+Sleep 100
 SetDefaultMouseSpeed, 2
 }
 }
@@ -1689,59 +1951,6 @@ SetDefaultMouseSpeed, 2
 
 
 
-
-
-	; === Template Window Coordinates ===	
-
-
-
-
-checkForTemplateWindow()
-{
-	PixelGetColor, color, 968, 409 ; Looks for pixel (load up the template window and select pixel that is behind the blue top of the window) and waits for the template window to load before progressing
-While color = 0xffffff 
-{
-	PixelGetColor, color, 968, 409 ; Loop keeps looking for pixel until it changes to blue (top of the template window)
-sleep 50
-}
-}
-
-
-
-
-checkIfTemplateWindowIsScrolled()
-{
-Loop
-{
-Sleep 100
-PixelGetColor, color, 1348, 638
-if (color = 0xFFFFFF)
-{
-SetDefaultMouseSpeed, 0
-MouseMove 1349, 683 ; Moves the mouse over the down arrow in template window
-MouseClick ; Scrolls Down in the Template Window
-Sleep 50
-MouseClick
-Sleep 50
-MouseClick
-Sleep 50
-SetDefaultMouseSpeed, 2
-break
-}
-else
-{
-break
-}
-}
-}
-
-
-
-
-
-
-
-
 	; === Stock & Check Coordinates ===	
 
 
@@ -1755,7 +1964,9 @@ OrderStatusY := 295 ; Y coordinate of the "Order Status" down arrow in new Order
 MouseMove %OrderStatusX%, %OrderStatusY% ; "Order Status" downarrow coordinates in new Order window
 MouseClick
 Sleep 50
-MouseMove 682, 338 ; "Pending" option Coordinates in dropdown menu
+SendInput {Raw}Pending
+Sleep 50
+SendInput {Enter}
 MouseClick
 Sleep 50
 MouseMove 851, 704 ; Stock & Check button Coordinates in  new Order Window
@@ -1766,13 +1977,17 @@ SendInput {Enter}
 MouseMove %OrderStatusX%, %OrderStatusY% ; "Order Status" downarrow coordinates in new Order window
 MouseClick
 Sleep 50
-MouseMove 743, 311 ; "Open" option Coordinates in dropdown menu
+SendInput {Raw}Open
+Sleep 50
+SendInput {Enter}
 MouseClick
 Sleep 50
 MouseMove %OrderStatusX%, %OrderStatusY% ; "Order Status" downarrow coordinates in new Order window
 MouseClick
 Sleep 50
-MouseMove 739, 322 ; "Awaiting Payment" option Coordinates in dropdown menu
+SendInput {Raw}Awaiting Payment
+Sleep 50
+SendInput {Enter}
 MouseClick
 Sleep 50
 SetDefaultMouseSpeed, 2
@@ -1788,6 +2003,7 @@ MouseMove 752, 477 ; "Origin" downarrow field Coordinates (Siebel)
 MouseClick
 Sleep 50
 SendInput {Raw}Prescription - EPS
+Sleep 50
 SendInput {Enter}
 MouseMove 751, 373 ; "Source" downarrow field Coordinates (Siebel)
 MouseClick
@@ -1835,7 +2051,7 @@ Sleep 50
 
 checkForProgressBar()
 {
-Loop, 20
+Loop, 100
 {
 	PixelSearch, OutputVarX, OutputVarY, 1299, 1027, 1383, 1035, 000080, 150, Fast ; Loop looks for progress bar to appear before moving forward
 
@@ -1844,7 +2060,7 @@ Sleep 50
 else
 break
 }
-Loop, 20
+Loop, 100
 {
 	PixelSearch, OutputVarX, OutputVarY, 1299, 1027, 1383, 1035, 000080, 150, Fast ; Loop looks for progress bar to disappear before moving forward
 
