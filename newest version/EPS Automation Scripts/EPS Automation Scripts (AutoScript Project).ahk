@@ -1,4 +1,109 @@
 ﻿
+    ;======= GLOBAL VARIABLES =======
+	
+	
+	;=== ProScript Variables ===
+
+; ProScript Search Box 
+global proScriptSearchBoxX1 := -1534
+global proScriptSearchBoxY1 := -8
+global proScriptSearchBoxX2 := -282
+global proScriptSearchBoxY2 := 1064
+
+
+
+
+	;=== Siebel Various Variables ===
+	
+; Patient Account Search Box
+global siebelPatientSearchBoxX1 := 45
+global siebelPatientSearchBoxY1 := 628
+global siebelPatientSearchBoxX2 := 71
+global siebelPatientSearchBoxY2 := 661
+
+
+; Duplicate Search Box Coordinates
+global siebelDuplicateBoxPosX1 := 1260
+global siebelDuplicateBoxPosY1 := 700
+global siebelDuplicateBoxPosX2 := 1912
+global siebelDuplicateBoxPosY2 := 1077
+
+
+; Auto GAS Selected Button Search Box
+global siebelAutoGasSelectedButtonBoxPosX1 := 1567
+global siebelAutoGasSelectedButtonBoxPosY1 := 532
+global siebelAutoGasSelectedButtonBoxPosX2 := 1874
+global siebelAutoGasSelectedButtonBoxPosY2 := 672
+
+	
+	
+	
+	;=== Siebel Activity & Template Window Variables ===
+
+; Template Window Seach Box
+global siebelTemplateBoxPosX1 := 528
+global siebelTemplateBoxPosY1 := 363
+global siebelTemplateBoxPosX2 := 1395
+global siebelTemplateBoxPosY2 := 776
+
+
+; Activity Tab Search Box 
+global siebelActivityTabSearchBoxX1 := 960
+global siebelActivityTabSearchBoxY1 := 520
+global siebelActivityTabSearchBoxX2 := 1884
+global siebelActivityTabSearchBoxY2 := 622
+
+
+; Activity Tab Duplicate Search Box
+global siebelActivityTabDuplicateBoxPosX1 := 84
+global siebelActivityTabDuplicateBoxPosY1 := 367
+global siebelActivityTabDuplicateBoxPosX2 := 1897
+global siebelActivityTabDuplicateBoxPosY2 := 518
+
+
+; Activity New Button Search Box
+global siebelActivityNewButtonSearchBoxX1 := 565
+global siebelActivityNewButtonSearchBoxY1 := 570
+global siebelActivityNewButtonSearchBoxX2 := 613
+global siebelActivityNewButtonSearchBoxY2 := 593
+
+
+; Newly Created Activity Search Box
+global siebelNewlyCreatedActivitySearchBoxX1 := 492
+global siebelNewlyCreatedActivitySearchBoxY1 := 569
+global siebelNewlyCreatedActivitySearchBoxX2 := 1265
+global siebelNewlyCreatedActivitySearchBoxY2 :=650
+
+
+
+
+	;=== Siebel Safety Functions Variables ===
+
+; Siebel Check If Current window Is Correct AP Lines Search Box
+global siebelCheckIfCurrentWindowIsCorrectAPLinesBoxX1 := 490
+global siebelCheckIfCurrentWindowIsCorrectAPLinesBoxY1 := 518
+global siebelCheckIfCurrentWindowIsCorrectAPLinesBoxX2 := 983
+global siebelCheckIfCurrentWindowIsCorrectAPLinesBoxY2 := 574
+
+
+; Siebel Check If Current window Is Correct Contacts Search Box
+global siebelCheckIfCurrentWindowIsCorrectContactsBoxX1 := 6
+global siebelCheckIfCurrentWindowIsCorrectContactsBoxY1 := 114
+global siebelCheckIfCurrentWindowIsCorrectContactsBoxX2 := 426
+global siebelCheckIfCurrentWindowIsCorrectContactsBoxY2 := 156
+
+
+; Siebel Check If Current window Is Correct Stock & Check Search Box
+global siebelCheckIfCurrentWindowIsCorrectStockCheckBoxX1 := 6
+global siebelCheckIfCurrentWindowIsCorrectStockCheckBoxY1 := 114
+global siebelCheckIfCurrentWindowIsCorrectStockCheckBoxX2 := 888
+global siebelCheckIfCurrentWindowIsCorrectStockCheckBoxY2 := 176
+
+
+
+
+
+
 
 
   ; ==================================================================== EXITS SCRIPT DOCUMENT ==========================================================
@@ -49,8 +154,17 @@ Return
 CoordMode, Mouse, Screen
 CoordMode, Pixel, Screen
 
-^6::
-SendInput {Raw}380NCH0006 ; Complimentary Wet Wipes
+^3::
+SendInput {Raw}380NLT065 ; Product Discontinuation Flier
+
+Return
+
+#UseHook
+CoordMode, Mouse, Screen
+CoordMode, Pixel, Screen
+
+^4::
+SendInput {Raw}380NLTC034 ; Out Of Stock Flier
 
 Return
 
@@ -67,8 +181,8 @@ Return
 CoordMode, Mouse, Screen
 CoordMode, Pixel, Screen
 
-^4::
-SendInput {Raw}380NLTC034 ; Out Of Stock Flier
+^6::
+SendInput {Raw}380NCH0006 ; Complimentary Wet Wipes
 
 Return
 
@@ -378,7 +492,6 @@ Sleep 100
 
 siebelSourceDownArrow()
 siebelSelectSourceDUP()
-clearClipboard()
 siebelSelectStatusDownArrow()
 siebelSelectStatusDone()
 checkIfPxIsScrolled()
@@ -616,7 +729,6 @@ ClipWait
 Sleep 100
 
 siebelSubTypeDownArrow()
-clearClipboard()
 keyFix()
 
 BlockInput, MouseMoveOff
@@ -646,6 +758,7 @@ CoordMode, Pixel, Screen
 +End::
 SetDefaultMouseSpeed, 0
 BlockInput, MouseMove
+Clipboard := Clipboard
 
 checkIfCurrentWindowIsCorrectForStockAndCheck()
 checkIfScreenIsScrolledToTop()
@@ -681,6 +794,7 @@ CoordMode, Pixel, Screen
 !End::
 SetDefaultMouseSpeed, 0
 BlockInput, MouseMove
+Clipboard := Clipboard
 
 checkIfCurrentWindowIsCorrectForStockAndCheck()
 checkIfScreenIsScrolledToTop()
@@ -708,7 +822,6 @@ Return ; Script Run Finished
 SetBatchLines, -1
 CoordMode, Mouse, Screen
 CoordMode, Pixel, Screen
-colors := "97E8A2, 6666CC" ; Array of colors used by PixelSearch function (NHS number font colors - regular and highlighted)
 
 +PgDn::
 SetDefaultMouseSpeed, 0
@@ -721,7 +834,6 @@ siebelPasteNHSNumber()
 checkForProgressBar()
 checkForPatientNameToAppear()
 keyFix()
-clearClipboard()
 
 BlockInput, MouseMoveOff
 
@@ -829,9 +941,14 @@ Return ; Script Run Finished
 
 lookForNHSOnPX()
 {
+WinActivate, ahk_class TscShellContainerClass ; Opens up ProScript by its class
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\NHS_Number_Green.png
+global proScriptSearchBoxX1 
+global proScriptSearchBoxY1 
+global proScriptSearchBoxX2 
+global proScriptSearchBoxY2 
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY2%, *100 %A_ScriptDir%\Images\NHS_Number_Green.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -848,7 +965,7 @@ Sleep 50
 SendInput {Ctrl Down}
 SendInput {Raw}c
 SendInput {Ctrl Up}
-ClipWait, 1
+ClipWait, 0.2
 Sleep 100
 SetDefaultMouseSpeed, 2
 if RegExMatch(Clipboard, "(\d{10})", OutputVar)
@@ -867,7 +984,7 @@ Break
 }
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\NHS_Number_Purple.png
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY2%, *100 %A_ScriptDir%\Images\NHS_Number_Purple.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -884,7 +1001,7 @@ Sleep 50
 SendInput {Ctrl Down}
 SendInput {Raw}c
 SendInput {Ctrl Up}
-ClipWait, 1
+ClipWait, 0.2
 Sleep 100
 SetDefaultMouseSpeed, 2
 if RegExMatch(Clipboard, "(\d{10})", OutputVar)
@@ -914,9 +1031,14 @@ Reload
 
 checkForMedicationOnPX()
 {
+WinActivate, ahk_class TscShellContainerClass ; Opens up ProScript by its class
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\Prescribed_Medication_Green.png
+global proScriptSearchBoxX1 
+global proScriptSearchBoxY1 
+global proScriptSearchBoxX2 
+global proScriptSearchBoxY2 
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY2%, *100 %A_ScriptDir%\Images\Prescribed_Medication_Green.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -955,7 +1077,7 @@ else
 Return
 }
 }
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\Prescribed_Medication_Purple.png
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY2%, *100 %A_ScriptDir%\Images\Prescribed_Medication_Purple.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1007,9 +1129,14 @@ Reload
 
 selectsPXNumberInProScriptAndCopyIt()
 {
+WinActivate, ahk_class TscShellContainerClass ; Opens up ProScript by its class
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\Script_Id.png
+global proScriptSearchBoxX1 
+global proScriptSearchBoxY1 
+global proScriptSearchBoxX2 
+global proScriptSearchBoxY2 
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY2%, *170 %A_ScriptDir%\Images\Script_Id.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1027,7 +1154,7 @@ SendInput {Ctrl Down}
 SendInput {Raw}c
 SendInput {Ctrl Up}
 ClipWait, 1
-Sleep 200
+Sleep 50
 SetDefaultMouseSpeed, 2
 if RegExMatch(Clipboard, "(.{6}-.{6}-.{6})", OutputVar)
 {
@@ -1043,6 +1170,7 @@ SetDefaultMouseSpeed, 0
 MouseMove 370, 484
 MouseClick
 MsgBox, 4096, Error, "Could not find the PX Number. Press F12 to Exit the error message"
+BlockInput, MouseMoveOff
 Reload
 }
 
@@ -1051,9 +1179,14 @@ Reload
 
 selectsPXNumberInProScriptAndCopyItForDuplicate()
 {
+WinActivate, ahk_class TscShellContainerClass ; Opens up ProScript by its class
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\Script_Id.png
+global proScriptSearchBoxX1 
+global proScriptSearchBoxY1 
+global proScriptSearchBoxX2 
+global proScriptSearchBoxY2 
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY2%, *170 %A_ScriptDir%\Images\Script_Id.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1083,6 +1216,7 @@ Sleep 100
 SetDefaultMouseSpeed, 0
 MouseMove 370, 484
 MsgBox, 4096, Error, "Could not find the PX Number. Press F12 to Exit the error message"
+BlockInput, MouseMoveOff
 Reload
 }
 
@@ -1091,15 +1225,22 @@ Reload
 
 checkIfPxIsScrolled()
 {
+WinActivate, ahk_class TscShellContainerClass ; Opens up ProScript by its class
 Loop
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *25 %A_ScriptDir%\Images\PX_Scroll_Up_Arrow.png
+global proScriptSearchBoxX1 
+global proScriptSearchBoxY1 
+global proScriptSearchBoxX2 
+global proScriptSearchBoxY2 
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY2%, *25 %A_ScriptDir%\Images\PX_Scroll_Up_Arrow.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
 VarPosX := OutputVarX + 7
 VarPosY := OutputVarY + 19
 MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
 Sleep 50
 MouseClick
 Sleep 50
@@ -1113,13 +1254,15 @@ else if (ErrorLevel != 0)
 {
 ;
 }
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *25 %A_ScriptDir%\Images\PX_Scroll_Up_Arrow_2.png
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY2%, *25 %A_ScriptDir%\Images\PX_Scroll_Up_Arrow_2.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
 VarPosX := OutputVarX + 7
 VarPosY := OutputVarY + 19
 MouseMove %VarPosX%, %VarPosY%
+Sleep 50
+MouseClick
 Sleep 50
 MouseClick
 Sleep 50
@@ -1141,9 +1284,14 @@ Break
 
 checkForExpiryDateOnPXFirstLine()
 {
+WinActivate, ahk_class TscShellContainerClass ; Opens up ProScript by its class
 Loop, 2
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Green.png
+global proScriptSearchBoxX1 
+global proScriptSearchBoxY1 
+global proScriptSearchBoxX2 
+global proScriptSearchBoxY2 
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY2%, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Green.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1182,7 +1330,7 @@ else
 Return
 }
 }
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Purple.png
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY2%, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Purple.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1234,9 +1382,14 @@ Reload
 
 checkForExpiryDateOnPXSecondLine()
 {
+WinActivate, ahk_class TscShellContainerClass ; Opens up ProScript by its class
 Loop, 2
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Green.png
+global proScriptSearchBoxX1 
+global proScriptSearchBoxY1 
+global proScriptSearchBoxX2 
+global proScriptSearchBoxY2 
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY2%, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Green.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1275,7 +1428,7 @@ else
 Return
 }
 }
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Purple.png
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY1%, %proScriptSearchBoxY2%, *100 %A_ScriptDir%\Images\PX_Expiry_Date_Purple.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1325,24 +1478,6 @@ Reload
 
 
 
-checkForPatientNameToAppear()
-{
-Loop
-{
-	PixelSearch, OutputVarX, OutputVarY, 45, 628, 71, 661, 6666CC, 210, Fast ; Last Name Field Coordinates (Search Box - Siebel)
-if (ErrorLevel != 0)
-return
-else
-SetDefaultMouseSpeed, 0
-click %OutputVarX%, %OutputVarY%
-SetDefaultMouseSpeed, 2
-Return
-}
-}
-
-
-
-
 
 
 
@@ -1361,13 +1496,16 @@ Return
 	; === Activity Coordinates ===
 
 
-
-
 siebelActivityTab()
 {
-Loop, 2
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
+Loop, 10
 {
-ImageSearch OutputVarX, OutputVarY, 960, 520, 1884, 622, *60 %A_ScriptDir%\Images\Activities_Tab.png
+global siebelActivityTabSearchBoxX1 
+global siebelActivityTabSearchBoxY1 
+global siebelActivityTabSearchBoxX2 
+global siebelActivityTabSearchBoxY2
+ImageSearch OutputVarX, OutputVarY, %siebelActivityTabSearchBoxX1%, %siebelActivityTabSearchBoxY1%, %siebelActivityTabSearchBoxX2%, %siebelActivityTabSearchBoxY2%, *60 %A_ScriptDir%\Images\Activities_Tab.png
 if (ErrorLevel = 0)
 {
 VarPosX := OutputVarX + 30
@@ -1377,6 +1515,10 @@ MouseMove %VarPosX%, %VarPosY%
 MouseClick
 SetDefaultMouseSpeed, 2
 Return
+}
+else if (ErrorLevel != 0)
+{
+sleep 50
 }
 }
 SetDefaultMouseSpeed, 0
@@ -1394,19 +1536,22 @@ siebelActivityNewButton()
 {
 Loop, 10
 {
-ImageSearch OutputVarX, OutputVarY, 565, 570, 613, 593, *100 %A_ScriptDir%\Images\New_Activity_Button.png
+global siebelActivityNewButtonSearchBoxX1 
+global siebelActivityNewButtonSearchBoxY1 
+global siebelActivityNewButtonSearchBoxX2 
+global siebelActivityNewButtonSearchBoxY2
+ImageSearch OutputVarX, OutputVarY, %siebelActivityNewButtonSearchBoxX1%, %siebelActivityNewButtonSearchBoxY1%, %siebelActivityNewButtonSearchBoxX2%, %siebelActivityNewButtonSearchBoxY2%, *100, *TransBlack %A_ScriptDir%\Images\New_Activity_Button.png
 if (ErrorLevel = 0)
 {
 VarPosX := OutputVarX + 15
 VarPosY := OutputVarY + 5
 SetDefaultMouseSpeed, 0
 MouseMove %VarPosX%, %VarPosY%
-Sleep 100
 MouseClick
 SetDefaultMouseSpeed, 2
 Return
 }
-else (ErrorLevel != 0)
+else if (ErrorLevel != 0)
 {
 sleep 50
 }
@@ -1443,7 +1588,11 @@ clickOnNewlyCreatedActivity()
 {
 Loop, 20
 {
-ImageSearch OutputVarX, OutputVarY, 492, 569, 1265, 650, *50 %A_ScriptDir%\Images\New_Activity_Other.png
+global siebelNewlyCreatedActivitySearchBoxX1 
+global siebelNewlyCreatedActivitySearchBoxY1 
+global siebelNewlyCreatedActivitySearchBoxX2 
+global siebelNewlyCreatedActivitySearchBoxY2
+ImageSearch OutputVarX, OutputVarY, %siebelNewlyCreatedActivitySearchBoxX1%, %siebelNewlyCreatedActivitySearchBoxY1%, %siebelNewlyCreatedActivitySearchBoxX2%, %siebelNewlyCreatedActivitySearchBoxY2%, *50, *TransBlack %A_ScriptDir%\Images\New_Activity_Other.png
 if (ErrorLevel = 0)
 {
 VarPosX := OutputVarX + 15
@@ -1528,6 +1677,12 @@ Return
 }
 else
 {
+MouseClick
+SendInput ^{End}
+SendInput +{Home}
+SendInput {backspace}
+SendInput {backspace}
+SendInput {backspace}
 Sleep 50
 Send {Ctrl Down}
 SendInput {Raw}v
@@ -1630,19 +1785,42 @@ SetDefaultMouseSpeed, 2
 
 
 
+
+
+
+
+
+
+
+
 	; === Template Window Coordinates ===	
-
-
 
 
 checkForTemplateWindow()
 {
-	PixelGetColor, color, 968, 409 ; Looks for pixel (load up the template window and select pixel that is behind the blue top of the window) and waits for the template window to load before progressing
-While color = 0xffffff 
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
+Loop, 50
 {
-	PixelGetColor, color, 968, 409 ; Loop keeps looking for pixel until it changes to blue (top of the template window)
-sleep 50
+global siebelTemplateBoxPosX1
+global siebelTemplateBoxPosY1
+global siebelTemplateBoxPosX2
+global siebelTemplateBoxPosY2 
+ImageSearch OutputVarX, OutputVarY, %siebelTemplateBoxPosX1%, %siebelTemplateBoxPosY1%, %siebelTemplateBoxPosX2%, %siebelTemplateBoxPosY2%, *150 %A_ScriptDir%\Images\Siebel_Template_Window.png
+if (ErrorLevel = 0)
+{
+Return
 }
+else
+{
+Sleep 50
+}
+}
+SetDefaultMouseSpeed, 0
+MouseMove 370, 484
+MouseClick
+MsgBox, 4096, Error, "Cannot find the Template Window. Press F12 to Exit the error message"
+SetDefaultMouseSpeed, 2
+Reload
 }
 
 
@@ -1650,26 +1828,31 @@ sleep 50
 
 checkIfTemplateWindowIsScrolled()
 {
-Loop
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
+Loop, 1
 {
-Sleep 100
-PixelGetColor, color, 1348, 638
-if (color = 0xFFFFFF)
+global siebelTemplateBoxPosX1
+global siebelTemplateBoxPosY1
+global siebelTemplateBoxPosX2
+global siebelTemplateBoxPosY2 
+ImageSearch OutputVarX, OutputVarY, %siebelTemplateBoxPosX1%, %siebelTemplateBoxPosY1%, %siebelTemplateBoxPosX2%, %siebelTemplateBoxPosY2%, *25, %A_ScriptDir%\Images\Siebel_Template_Window_Scroll_Arrow.png
+if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
-MouseMove 1349, 683 ; Moves the mouse over the down arrow in template window
-MouseClick ; Scrolls Down in the Template Window
-Sleep 50
+VarPosX := OutputVarX + 7
+VarPosY := OutputVarY + 43
+MouseMove %VarPosX%, %VarPosY%
 MouseClick
 Sleep 50
 MouseClick
 Sleep 50
-SetDefaultMouseSpeed, 2
-break
+MouseClick
+Sleep 50
+Return
 }
-else
+else if (ErrorLevel != 0)
 {
-break
+Sleep 50
 }
 }
 }
@@ -1681,7 +1864,11 @@ searchForEpsShortfallTemplate()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Shortfall_Template_White.png
+global siebelTemplateBoxPosX1
+global siebelTemplateBoxPosY1
+global siebelTemplateBoxPosX2
+global siebelTemplateBoxPosY2  
+ImageSearch OutputVarX, OutputVarY, %siebelTemplateBoxPosX1%, %siebelTemplateBoxPosY1%, %siebelTemplateBoxPosX2%, %siebelTemplateBoxPosY2%, *150 %A_ScriptDir%\Images\EPS_Shortfall_Template_White.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1700,7 +1887,7 @@ Sleep 50
 }
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Shortfall_Template_Yellow.png
+ImageSearch OutputVarX, OutputVarY, %siebelTemplateBoxPosX1%, %siebelTemplateBoxPosY1%, %siebelTemplateBoxPosX2%, %siebelTemplateBoxPosY2%, *150 %A_ScriptDir%\Images\EPS_Shortfall_Template_Yellow.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1732,7 +1919,11 @@ searchForEpsReturnTemplate()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Return_Template_White.png
+global siebelTemplateBoxPosX1
+global siebelTemplateBoxPosY1
+global siebelTemplateBoxPosX2
+global siebelTemplateBoxPosY2 
+ImageSearch OutputVarX, OutputVarY, %siebelTemplateBoxPosX1%, %siebelTemplateBoxPosY1%, %siebelTemplateBoxPosX2%, %siebelTemplateBoxPosY2%, *150 %A_ScriptDir%\Images\EPS_Return_Template_Yellow.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1749,9 +1940,9 @@ else if (ErrorLevel != 0)
 Sleep 50
 }
 }
-Loop, 5
+Loop
 {
-ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Return_Template_Yellow.png
+ImageSearch OutputVarX, OutputVarY, %siebelTemplateBoxPosX1%, %siebelTemplateBoxPosY1%, %siebelTemplateBoxPosX2%, %siebelTemplateBoxPosY2%, *150 %A_ScriptDir%\Images\EPS_Return_Template_White.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1765,7 +1956,7 @@ Return
 }
 else if (ErrorLevel != 0)
 {
-Sleep 50
+Return
 }
 }
 SetDefaultMouseSpeed, 0
@@ -1783,7 +1974,11 @@ searchForEpsPxServiceReturnTemplate()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Return_PXService_Template_White.png
+global siebelTemplateBoxPosX1
+global siebelTemplateBoxPosY1
+global siebelTemplateBoxPosX2
+global siebelTemplateBoxPosY2 
+ImageSearch OutputVarX, OutputVarY, %siebelTemplateBoxPosX1%, %siebelTemplateBoxPosY1%, %siebelTemplateBoxPosX2%, %siebelTemplateBoxPosY2%, *150 %A_ScriptDir%\Images\EPS_Return_PXService_Template_White.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1802,7 +1997,7 @@ Sleep 50
 }
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *150 %A_ScriptDir%\Images\EPS_Return_PXService_Template_Yellow.png
+ImageSearch OutputVarX, OutputVarY, %siebelTemplateBoxPosX1%, %siebelTemplateBoxPosY1%, %siebelTemplateBoxPosX2%, %siebelTemplateBoxPosY2%, *150 %A_ScriptDir%\Images\EPS_Return_PXService_Template_Yellow.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1833,9 +2028,14 @@ Reload
 
 clickOkButtonInTemplateWindow()
 {
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
 Loop, 10
 {
-ImageSearch OutputVarX, OutputVarY, 553, 387, 1370, 748, *120 %A_ScriptDir%\Images\Ok_Button_Template_Window.png
+global siebelTemplateBoxPosX1
+global siebelTemplateBoxPosY1
+global siebelTemplateBoxPosX2
+global siebelTemplateBoxPosY2 
+ImageSearch OutputVarX, OutputVarY, %siebelTemplateBoxPosX1%, %siebelTemplateBoxPosY1%, %siebelTemplateBoxPosX2%, %siebelTemplateBoxPosY2%, *120 %A_ScriptDir%\Images\Ok_Button_Template_Window.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1869,13 +2069,20 @@ Reload
 
 
 
+
+
+
+
+
+
+
+
 	; === Duplicate Coordinates ===
-
-
 
 
 siebelClickOnNewInNotes()
 {
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
 SetDefaultMouseSpeed, 0
 
 	MouseMove 1422, 899 ; Moves over New button in Active Notes on AP Order Lines
@@ -1889,10 +2096,13 @@ SetDefaultMouseSpeed, 2
 
 siebelActivityTabDuplicate()
 {
-Loop
+Loop, 5
 {
-Sleep 100
-ImageSearch OutputVarX, OutputVarY, 484, 367, 1897, 518, *60 %A_ScriptDir%\Images\Activities_Tab.png
+global siebelActivityTabDuplicateBoxPosX1
+global siebelActivityTabDuplicateBoxPosY1
+global siebelActivityTabDuplicateBoxPosX2
+global siebelActivityTabDuplicateBoxPosY2 
+ImageSearch OutputVarX, OutputVarY, %siebelActivityTabDuplicateBoxPosX1%, %siebelActivityTabDuplicateBoxPosY1%, %siebelActivityTabDuplicateBoxPosX2%, %siebelActivityTabDuplicateBoxPosY2%, *60 %A_ScriptDir%\Images\Activities_Tab.png
 if (ErrorLevel = 0)
 {
 VarPosX := OutputVarX + 30
@@ -1901,18 +2111,19 @@ SetDefaultMouseSpeed, 0
 MouseMove %VarPosX%, %VarPosY%
 MouseClick
 SetDefaultMouseSpeed, 2
-Break
+Return
 }
-else (ErrorLevel != 0)
+else if (ErrorLevel != 0)
 {
+sleep 50
+}
+}
 SetDefaultMouseSpeed, 0
 MouseMove 370, 484
 MouseClick
 SetDefaultMouseSpeed, 2
 MsgBox, 4096, Error, "Script Failed - Could not find Activity tab. Press F12 to Exit the error message"
 Reload
-}
-}
 }
 
 
@@ -1922,7 +2133,11 @@ siebelFlagContactTick()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *120 %A_ScriptDir%\Images\Flag_Contact_Label.png
+global siebelDuplicateBoxPosX1
+global siebelDuplicateBoxPosY1
+global siebelDuplicateBoxPosX2
+global siebelDuplicateBoxPosY2 
+ImageSearch OutputVarX, OutputVarY, %siebelDuplicateBoxPosX1%, %siebelDuplicateBoxPosY1%, %siebelDuplicateBoxPosX2%, %siebelDuplicateBoxPosY2%, *120 %A_ScriptDir%\Images\Flag_Contact_Label.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1941,7 +2156,7 @@ Sleep 50
 }
 Loop, 2
 {
-ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *120 %A_ScriptDir%\Images\Flag_Contact_Tick_Empty.png
+ImageSearch OutputVarX, OutputVarY, %siebelDuplicateBoxPosX1%, %siebelDuplicateBoxPosY1%, %siebelDuplicateBoxPosX2%, %siebelDuplicateBoxPosY2%, *120 %A_ScriptDir%\Images\Flag_Contact_Tick_Empty.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -1960,7 +2175,7 @@ Sleep 50
 }
 Loop
 {
-ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *120 %A_ScriptDir%\Images\Flag_Contact_Ticked.png
+ImageSearch OutputVarX, OutputVarY, %siebelDuplicateBoxPosX1%, %siebelDuplicateBoxPosY1%, %siebelDuplicateBoxPosX2%, %siebelDuplicateBoxPosY2%, *120 %A_ScriptDir%\Images\Flag_Contact_Ticked.png
 if (ErrorLevel = 0)
 {
 Return
@@ -1983,9 +2198,14 @@ Return
 
 siebelDescriptionFieldInActiveNotes()
 {
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, 1260, 714, 1912, 1077, *120 %A_ScriptDir%\Images\Description_Field_Active_Notes.png
+global siebelDuplicateBoxPosX1
+global siebelDuplicateBoxPosY1
+global siebelDuplicateBoxPosX2
+global siebelDuplicateBoxPosY2 
+ImageSearch OutputVarX, OutputVarY, %siebelDuplicateBoxPosX1%, %siebelDuplicateBoxPosY1%, %siebelDuplicateBoxPosX2%, %siebelDuplicateBoxPosY2%, *120 %A_ScriptDir%\Images\Description_Field_Active_Notes.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -2012,7 +2232,11 @@ siebelTypeFieldInActiveNotes()
 {
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *100 %A_ScriptDir%\Images\Type_Field_Active_Notes.png
+global siebelDuplicateBoxPosX1
+global siebelDuplicateBoxPosY1
+global siebelDuplicateBoxPosX2
+global siebelDuplicateBoxPosY2 
+ImageSearch OutputVarX, OutputVarY, %siebelDuplicateBoxPosX1%, %siebelDuplicateBoxPosY1%, %siebelDuplicateBoxPosX2%, %siebelDuplicateBoxPosY2%, *100 %A_ScriptDir%\Images\Type_Field_Active_Notes.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -2031,7 +2255,7 @@ Sleep 50
 }
 Loop, 5
 {
-ImageSearch OutputVarX, OutputVarY, 1260, 488, 1912, 1077, *100 %A_ScriptDir%\Images\Type_Field_Active_Notes_Down_Arrow.png
+ImageSearch OutputVarX, OutputVarY, %siebelDuplicateBoxPosX1%, %siebelDuplicateBoxPosY1%, %siebelDuplicateBoxPosX2%, %siebelDuplicateBoxPosY2%, *100 %A_ScriptDir%\Images\Type_Field_Active_Notes_Down_Arrow.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -2041,9 +2265,9 @@ MouseMove %VarPosX%, %VarPosY%
 Sleep 50
 MouseClick
 Sleep 50
-MouseMove 0, 40, 0, R
+SendInput {Raw}Duplicate Prescription Alert
 Sleep 50
-MouseClick
+SendInput {Enter}
 Sleep 50
 Break
 }
@@ -2062,9 +2286,15 @@ Sleep 50
 
 
 
+
+
+
+
+
+
+
+
 	; === GAS Related (Buttons, PX Field) Coordinates ===
-
-
 
 
 siebelPerscriptionNoField()
@@ -2109,8 +2339,10 @@ Sleep 200
 
 siebelCheckPerscriptionFieldIfPXIsPastedIn()
 {
-Loop, 5
-{
+global proScriptSearchBoxX1 
+global proScriptSearchBoxY1 
+global proScriptSearchBoxX2 
+global proScriptSearchBoxY2 
 MouseClick
 SendInput ^{End}
 SendInput +{Home}
@@ -2120,13 +2352,15 @@ SendInput c
 Send {Ctrl Up}
 ClipWait, 1
 Sleep 100
-if RegExMatch(Clipboard, "(.{9}-.{6}-.{6})", OutputVar)
+Loop, 5
 {
-return
+if RegExMatch(Clipboard, "(\QEPS\E.{6}\-.{6}\-.{6})", OutputVar)
+{
+Return
 }
 else
 {
-ImageSearch OutputVarX, OutputVarY, -1534, -8, -282, 1064, *100 %A_ScriptDir%\Images\Script_Id.png
+ImageSearch OutputVarX, OutputVarY, %proScriptSearchBoxX1%, %proScriptSearchBoxY1%, %proScriptSearchBoxX2%, %proScriptSearchBoxY2%, *150 %A_ScriptDir%\Images\Script_Id.png
 if (ErrorLevel = 0)
 {
 SetDefaultMouseSpeed, 0
@@ -2145,9 +2379,11 @@ SendInput c
 SendInput {Ctrl Up}
 ClipWait, 1
 Sleep 50
-MouseMove 672, 241 ; Perscription No Field coordinates in Siebel, after GASing the order    
+MouseMove 672, 241 ; Perscription No Field coordinates in Siebel, after GASSing the order   
 MouseClick
-Sleep, 50
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
+SendInput {Enter}
+Sleep 50
 MouseClick
 Sleep 50
 SendInput {backspace}
@@ -2166,9 +2402,16 @@ Send {Ctrl Down}
 SendInput v
 Send {Ctrl Up}
 ClipWait 1
-SendInput {Enter}
 Sleep 100
-SetDefaultMouseSpeed, 2
+MouseClick
+SendInput ^{End}
+SendInput +{Home}
+Sleep 50
+Send {Ctrl Down}
+SendInput c
+Send {Ctrl Up}
+ClipWait, 1
+Sleep 100
 }
 }
 }
@@ -2185,6 +2428,7 @@ Reload
 
 siebelAutoGASAllButton()
 {
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
 SetDefaultMouseSpeed, 0
 
 	MouseMove 1609, 600 ; "Auto GAS All" button Coordinates (Siebel)
@@ -2199,19 +2443,37 @@ SetDefaultMouseSpeed, 2
 
 siebelAutoGASSelectedButton()
 {
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
 SetDefaultMouseSpeed, 0
-
-	MouseMove 1750, 469 ; Whitespace coordinates (Siebel) above Auto GAS Selected Button
-
-Sleep 50
+MouseMove 1790, 483 ; Moves over to whitespace to click and activate Auto GAS Selected button
 MouseClick
-Sleep 100
-
-	MouseMove 1700, 599 ; "Auto GAS Selected" button Coordinates
-
 MouseClick
-
+Loop, 30
+{
+global siebelAutoGasSelectedButtonBoxPosX1
+global siebelAutoGasSelectedButtonBoxPosY1
+global siebelAutoGasSelectedButtonBoxPosX2
+global siebelAutoGasSelectedButtonBoxPosY2 
+ImageSearch OutputVarX, OutputVarY, %siebelAutoGasSelectedButtonBoxPosX1%, %siebelAutoGasSelectedButtonBoxPosY1%, %siebelAutoGasSelectedButtonBoxPosX2%, %siebelAutoGasSelectedButtonBoxPosY2%, *150 %A_ScriptDir%\Images\Auto_GAS_Selected_Button.png
+if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+VarPosX := OutputVarX + 45
+VarPosY := OutputVarY + 5
+MouseMove %VarPosX%, %VarPosY%
+MouseClick
+MouseClick
+Return
+}
+else if (ErrorLevel != 0)
+{
+sleep 50
+}
+}
 SetDefaultMouseSpeed, 2
+BlockInput, MouseMoveOff
+MsgBox, 4096, Error, Could not find the Auto GAS Selected button. Please run the script one more time. Press F12 to Exit the error message.
+Reload
 }
 
 
@@ -2221,7 +2483,42 @@ SetDefaultMouseSpeed, 2
 
 
 
+
+
+
+
+
+
+
+
 	; === NHS Copy & Paste Coordinates ===	
+
+
+checkForPatientNameToAppear()
+{
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
+Loop, 100
+{
+global siebelPatientSearchBoxX1 
+global siebelPatientSearchBoxY1 
+global siebelPatientSearchBoxX2
+global siebelPatientSearchBoxY2
+PixelSearch, OutputVarX, OutputVarY, %siebelPatientSearchBoxX1%, %siebelPatientSearchBoxY1%, %siebelPatientSearchBoxX2%, %siebelPatientSearchBoxY2%, 6666CC, 210, Fast ; Last Name Field Coordinates (Search Box - Siebel)
+if (ErrorLevel != 0)
+{
+Sleep 20
+}
+else if (ErrorLevel = 0)
+{
+SetDefaultMouseSpeed, 0
+MouseMove %OutputVarX%, %OutputVarY%
+MouseClick
+SetDefaultMouseSpeed, 2
+Return
+}
+}
+Return
+}
 
 
 
@@ -2254,7 +2551,10 @@ SendInput {Backspace}
 Sleep 50
 SendInput ^{End}
 SendInput +{Home}
-Sleep 50
+SendInput {Backspace}
+SendInput {Backspace}
+SendInput ^{End}
+SendInput +{Home}
 SendInput {Backspace}
 SendInput {Backspace}
 Sleep 50
@@ -2274,9 +2574,15 @@ SetDefaultMouseSpeed, 2
 
 
 
+
+
+
+
+
+
+
+
 	; === Stock & Check Coordinates ===	
-
-
 
 
 siebelStockAndCheckOrderStatusChanges()
@@ -2374,6 +2680,7 @@ Sleep 50
 
 checkForProgressBar()
 {
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
 Loop, 100
 {
 	PixelSearch, OutputVarX, OutputVarY, 1299, 1027, 1383, 1035, 000080, 150, Fast ; Loop looks for progress bar to appear before moving forward
@@ -2399,6 +2706,7 @@ Return
 
 checkForWindowChangeGas()
 {
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
 	PixelGetColor, color, 691, 526 ; "Team" field Coordinates (Siebel - gray color sample) - Loop looks for white color to appear at these coordinates before moving forward
 While color = 0xEEEEEE
 {
@@ -2414,11 +2722,20 @@ Sleep 10
 
 
 
+
+
+
+
+
+
+
+
 	; ====================== SAFETY FUNCTIONS ========================
 
 
 checkIfScreenIsScrolledToTop()
 {
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
 Loop
 {
 PixelGetColor, color, 1908, 190
@@ -2462,9 +2779,18 @@ Reload
 
 checkIfCurrentWindowIsCorrect()
 {
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
 Loop
 {
-ImageSearch OutputVarX, OutputVarY, 490, 518, 983, 574, *70 %A_ScriptDir%\Images\AP_Order_Lines.png
+global siebelCheckIfCurrentWindowIsCorrectAPLinesBoxX1 
+global siebelCheckIfCurrentWindowIsCorrectAPLinesBoxY1 
+global siebelCheckIfCurrentWindowIsCorrectAPLinesBoxX2 
+global siebelCheckIfCurrentWindowIsCorrectAPLinesBoxY2 
+global siebelCheckIfCurrentWindowIsCorrectContactsBoxX1 
+global siebelCheckIfCurrentWindowIsCorrectContactsBoxY1 
+global siebelCheckIfCurrentWindowIsCorrectContactsBoxX2 
+global siebelCheckIfCurrentWindowIsCorrectContactsBoxY2 
+ImageSearch OutputVarX, OutputVarY, %siebelCheckIfCurrentWindowIsCorrectAPLinesBoxX1%, %siebelCheckIfCurrentWindowIsCorrectAPLinesBoxY1%, %siebelCheckIfCurrentWindowIsCorrectAPLinesBoxX2%, %siebelCheckIfCurrentWindowIsCorrectAPLinesBoxY2%, *70 %A_ScriptDir%\Images\AP_Order_Lines.png
 if (ErrorLevel = 0)
 {
 ;
@@ -2475,7 +2801,7 @@ BlockInput, MouseMoveOff
 MsgBox, 4096, Error, You can only run this script from AP Order Lines Tab. Press F12 to Exit the error message.
 Reload
 }
-ImageSearch OutputVarX, OutputVarY, 6, 114, 426, 156, *70 %A_ScriptDir%\Images\Contacts.png
+ImageSearch OutputVarX, OutputVarY, %siebelCheckIfCurrentWindowIsCorrectContactsBoxX1%, %siebelCheckIfCurrentWindowIsCorrectContactsBoxY1%, %siebelCheckIfCurrentWindowIsCorrectContactsBoxX2%, %siebelCheckIfCurrentWindowIsCorrectContactsBoxY2%, *70 %A_ScriptDir%\Images\Contacts.png
 if (ErrorLevel = 0)
 {
 Break
@@ -2494,9 +2820,14 @@ Reload
 
 checkIfCurrentWindowIsCorrectForStockAndCheck()
 {
+WinActivate, ahk_class Transparent Windows Client ; Opens up Siebel by its class
 Loop
 {
-ImageSearch OutputVarX, OutputVarY, 6, 114, 888, 176, *20 %A_ScriptDir%\Images\Orders.png
+global siebelCheckIfCurrentWindowIsCorrectStockCheckBoxX1 
+global siebelCheckIfCurrentWindowIsCorrectStockCheckBoxY1 
+global siebelCheckIfCurrentWindowIsCorrectStockCheckBoxX2 
+global siebelCheckIfCurrentWindowIsCorrectStockCheckBoxY2 
+ImageSearch OutputVarX, OutputVarY, %siebelCheckIfCurrentWindowIsCorrectStockCheckBoxX1%, %siebelCheckIfCurrentWindowIsCorrectStockCheckBoxY1%, %siebelCheckIfCurrentWindowIsCorrectStockCheckBoxX2%, %siebelCheckIfCurrentWindowIsCorrectStockCheckBoxY2%, *20 %A_ScriptDir%\Images\Orders.png
 if (ErrorLevel = 0)
 {
 Break
@@ -2554,6 +2885,14 @@ MouseClick
 MsgBox, 4096, Error, Could not find the selected sticky notes! Press F12 to exit
 Reload
 }
+
+
+
+
+
+
+
+
 
 
 
